@@ -11,6 +11,7 @@ import Budget from "./components/Budget";
 import ExpenseTracker from "./components/Expense";
 import ChangePasswordPage from "./components/ChangePassword";
 import AuthPage from "./components/Login";
+import WalletPage from "./components/Wallet";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
              <Route path="password" element={<ChangePasswordPage/>} />
             <Route path="expense" element={<ExpenseTracker />} />
             <Route path="budget" element={<Budget />} />
+             <Route path="income" element={<WalletPage />} />
 
           </Route>
         </Routes>

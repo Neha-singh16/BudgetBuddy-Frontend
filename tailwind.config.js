@@ -6,6 +6,14 @@ export default {
   ],
   theme: {
     extend: {
+        screens: {
+        'tablet': '700px',
+        // keep defaults or adjust as needed
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        // ...
+      },
        colors: {
         navy: "#2F4156",
         teal: "#567C8D",

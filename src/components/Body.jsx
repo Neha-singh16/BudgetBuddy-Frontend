@@ -1,36 +1,104 @@
 
+// /* Body.jsx */
+// import React, { useEffect } from 'react';
+// import { Outlet, useNavigate } from 'react-router-dom';
+// import Navbar from "./Navbar";
+// import Sidebar from "./Sidebar";
+// import Footer from "./Footer";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setUser, removeUser } from '../utils/userSlice';
+// import { USER } from '../utils/constant';
+
+// const Body = () => {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const isMenuOpen = useSelector((s) => s.menu.isMenuOpen);
+//   const user = useSelector(s => s.user);
+
+//   useEffect(() => {
+//     (async () => {
+//       try {
+//         const res = await fetch(`${USER}/profile/view`, { credentials: 'include' });
+//         if (res.ok) {
+//           const data = await res.json();
+//           dispatch(setUser(data));
+//         } else {
+//           dispatch(removeUser());
+//           navigate('/login', { replace: true });
+//         }
+//       } catch {
+//         dispatch(removeUser());
+//         navigate('/login', { replace: true });
+//       }
+//     })();
+//   }, [dispatch, navigate]);
+
+//   if (user === undefined) {
+//     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+//   }
+
+//   return (
+//     <div className="flex flex-col h-screen">
+//       <Navbar />
+//       <div className="flex flex-1 overflow-hidden">
+//         <Sidebar />
+//         <div className="flex-1 flex flex-col overflow-hidden">
+//           <main className="flex-1 overflow-auto p-4 bg-gray-50">
+//             <Outlet />
+//           </main>
+//           <Footer />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Body;
 
 
-// pages/Body.tsx
-import React from 'react';
-import { Outlet } from "react-router-dom";
-import Navbar from '../components/Navbar';
-import Footer from "../components/Footer";
-import Sidebar from '../components/Sidebar';
-import { useSelector } from 'react-redux';
+/* Body.jsx */
+import React, { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import Footer from "./Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, removeUser } from '../utils/userSlice';
+import { USER } from '../utils/constant';
 
 const Body = () => {
-  const isMenuOpen = useSelector((state) => state.menu.isMenuOpen);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isMenuOpen = useSelector((s) => s.menu.isMenuOpen);
+  const user = useSelector(s => s.user);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${USER}/profile/view`, { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          dispatch(setUser(data));
+        } else {
+          dispatch(removeUser());
+          navigate('/login', { replace: true });
+        }
+      } catch {
+        dispatch(removeUser());
+        navigate('/login', { replace: true });
+      }
+    })();
+  }, [dispatch, navigate]);
+
+  if (user === undefined) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 overflow-hidden">
-      {/* Navbar */}
+    <div className="flex flex-col min-h-screen bg-beige">  {/* full-page background to eliminate top/bottom white gaps */}
       <Navbar />
-
-      <div className="flex flex-grow overflow-hidden">
-        {/* Sidebar wrapper: width toggles between 0 and 16rem */}
-        <div
-          className={`flex flex-shrink-0
-            ${isMenuOpen ? 'w-64' : 'w-0'}
-            transition-all duration-300
-          `}
-        >
-          <Sidebar />
-        </div>
-
-        {/* Main content: takes remaining space */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <main className="flex-1 overflow-auto">
+      <div className="flex flex-1">
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+          <main className="flex-1 overflow-auto p-4 bg-beige">
             <Outlet />
           </main>
           <Footer />
@@ -41,4 +109,3 @@ const Body = () => {
 };
 
 export default Body;
-

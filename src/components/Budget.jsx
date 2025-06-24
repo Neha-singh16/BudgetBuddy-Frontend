@@ -1,166 +1,122 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setBudgets, addBudget, deleteBudget } from "../utils/budgetSlice";
-import { setCategories } from "../utils/categorySlice";
-import {USER} from "../utils/constant";
+
+
+// src/components/Budget.jsx
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setBudgets, addBudget, deleteBudget } from '../utils/budgetSlice';
+import { setCategories } from '../utils/categorySlice';
+import { USER } from '../utils/constant';
+import { Link } from 'react-router-dom';
 
 export default function Budget() {
   const dispatch = useDispatch();
-  const budgets = useSelector((state) => state.budget.budgets);
-  const categories = useSelector((state) => state.category.categories);
+  const budgets = useSelector(state => state.budget.budgets);
+  const categories = useSelector(state => state.category.categories);
 
-  const [formData, setFormData] = useState({
-    categoryId: "",
-    limit: "",
-    period: "monthly",
-  });
+  const [formData, setFormData] = useState({ amount: '', date: new Date().toISOString().substr(0, 10), category: '', budget: '', note: '' });
+  const [newBudget, setNewBudget] = useState({ categoryId: '', limit: '', period: 'monthly' });
+  const [error, setError] = useState('');
 
-  const [selectedCategory, setSelectedCategory] = useState("all");
-
-  // 🔁 Fetch categories & budgets
+  // Fetch categories & budgets
   useEffect(() => {
-    fetch(`${USER}/category`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => dispatch(setCategories(data)))
-      .catch(console.error);
-
-    fetch(`${USER}/user/budget`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => dispatch(setBudgets(data)))
-      .catch(console.error);
+    (async () => {
+      try {
+        const [cats, buds] = await Promise.all([
+          fetch(`${USER}/category`, { credentials: 'include' }).then(r => r.json()),
+          fetch(`${USER}/user/budget`, { credentials: 'include' }).then(r => r.json()),
+        ]);
+        dispatch(setCategories(cats));
+        dispatch(setBudgets(buds));
+      } catch (e) {
+        console.error(e);
+      }
+    })();
   }, [dispatch]);
 
-  // 🧠 Handle Form Input
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  // Handlers
+  const handleBudgetChange = e => setNewBudget(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  // ➕ Create Budget
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const res = await fetch(`${USER}/user/budget`, {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      dispatch(addBudget(data));
-      setFormData({ categoryId: "", limit: "", period: "monthly" });
-    } else {
-      alert(data.error || "Something went wrong!");
-    }
-  } catch (err) {
-    console.error("Budget submission error:", err);
-    alert("Something went wrong while submitting the budget.");
-  }
-};
-
-  // ❌ Delete Budget
-  const handleDelete = async (id) => {
-    const res = await fetch(`${USER}/user/budget/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (res.ok) {
-      dispatch(deleteBudget(id));
+  const handleAddBudget = async e => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${USER}/user/budget`, {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ categoryId: newBudget.categoryId, limit: Number(newBudget.limit), period: newBudget.period }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed');
+      }
+      const saved = await res.json();
+      dispatch(addBudget(saved));
+      setNewBudget({ categoryId: '', limit: '', period: 'monthly' });
+    } catch (e) {
+      setError(e.message);
     }
   };
 
-  // 🔍 Filtered Budgets
-  const filteredBudgets =
-    selectedCategory === "all"
-      ? budgets
-      : budgets.filter((b) => b.categoryId === selectedCategory);
+  const handleDelete = async id => {
+    if (!window.confirm('Delete this budget?')) return;
+    const res = await fetch(`${USER}/user/budget/${id}`, { method: 'DELETE', credentials: 'include' });
+    if (res.ok) dispatch(deleteBudget(id));
+  };
+
+  // Helper to format name
+  const getCatName = id => categories.find(c => c._id === id)?.name || 'Unknown';
 
   return (
     <div className="p-6 bg-[#F5EFEB] min-h-screen">
-      <h1 className="text-3xl font-bold text-[#2F4156] mb-6">Manage Budgets</h1>
-      {/* Add Budget Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-[#C8D9E6] rounded-lg p-4 mb-6 shadow-lg"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <select
-            name="categoryId"
-            value={formData.categoryId}
-            onChange={handleChange}
-            required
-            className="p-2 rounded bg-[#F5EFEB] border text-[#2F4156]"
-          >
+      <h1 className="text-3xl font-bold text-[#2F4156] mb-6">Create Your Budgets</h1>
+
+      {/* Add Budget Form (styled like expense UI) */}
+      <form onSubmit={handleAddBudget} className="bg-[#C8D9E6] p-4 mb-6 rounded shadow">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <select name="categoryId" value={newBudget.categoryId} onChange={handleBudgetChange}
+            className="p-2 rounded bg-white border text-[#2F4156]" required>
             <option value="">Select Category</option>
-            {categories.map((cat) => (
-             
-
-              <option key={cat._id} value={cat._id}>
-                {cat.name}
-              </option>
-            ))}
+            {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
           </select>
-
-          <input
-            type="number"
-            name="limit"
-            placeholder="Limit"
-            value={formData.limit}
-            onChange={handleChange}
-            required
-            className="p-2 rounded bg-[#F5EFEB] border text-[#2F4156]"
-          />
-
-          <select
-            name="period"
-            value={formData.period}
-            onChange={handleChange}
-            className="p-2 rounded bg-[#F5EFEB] border text-[#2F4156]"
-          >
+          <input type="number" name="limit" value={newBudget.limit} onChange={handleBudgetChange}
+            placeholder="Limit" className="p-2 rounded bg-white border text-[#2F4156]" required />
+          <input type="date" name="date" value={formData.date}
+            onChange={e => setFormData(fd => ({ ...fd, date: e.target.value }))}
+            className="p-2 rounded bg-white border text-[#2F4156]" disabled />
+          <select name="period" value={newBudget.period} onChange={handleBudgetChange}
+            className="p-2 rounded bg-white border text-[#2F4156]">
             <option value="monthly">Monthly</option>
             <option value="weekly">Weekly</option>
             <option value="yearly">Yearly</option>
           </select>
+          <button type="submit" className="px-4 py-2 bg-[#567C8D] text-white rounded hover:bg-[#2F4156]">
+            Add Budget
+          </button>
         </div>
-        <button
-          type="submit"
-          className="mt-4 px-4 py-2 bg-[#567C8D] text-white rounded hover:bg-[#2F4156]"
-        >
-          Add Budget
-        </button>
+        {error && <p className="mt-2 text-red-600">{error}</p>}
       </form>
 
-      {/* Budget List */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredBudgets.map((budget) => (
-          <div
-            key={budget._id}
-            className="bg-white rounded-lg p-4 shadow-md flex flex-col justify-between"
-          >
-            <h2 className="text-xl font-semibold text-[#2F4156]">
-              {categories.find((c) => c._id === budget.categoryId)?.name ??
-                "Unknown"}
-            </h2>
-            <p className="text-[#567C8D]">Limit: ₹{budget.limit}</p>
-            <p className="text-[#567C8D] capitalize">Period: {budget.period}</p>
-            <button
-              onClick={() => handleDelete(budget._id)}
-              className="mt-3 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+      {/* Budget List styled like expenses */}
+      <div className="bg-white p-4 rounded shadow">
+        <h2 className="text-xl font-semibold text-[#2F4156] mb-4">Your Budgets</h2>
+        <ul className="space-y-4 max-h-80 overflow-y-auto">
+          {budgets.map(b => (
+            <li key={b._id} className="flex justify-between items-center">
+              <div>
+                <p className="font-medium text-[#2F4156]">
+                  {getCatName(b.categoryId)} ({b.period.charAt(0).toUpperCase() + b.period.slice(1)})
+                </p>
+                <p className="text-sm text-gray-500">Limit: ₹{b.limit}</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-[#2F4156]">₹{b.limit}</span>
+                <button onClick={() => handleDelete(b._id)}
+                  className="text-red-500 hover:text-red-700">
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
