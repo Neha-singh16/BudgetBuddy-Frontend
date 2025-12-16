@@ -1,7 +1,7 @@
 
 
 // src/components/Budget.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBudgets, addBudget, deleteBudget } from '../utils/budgetSlice';
 import { setCategories } from '../utils/categorySlice';
@@ -52,6 +52,7 @@ export default function Budget() {
   const dispatch = useDispatch();
   const budgets = useSelector(state => state.budget.budgets);
   const categories = useSelector(state => state.category.categories);
+  const listRef = useRef(null);
 
   const [formData, setFormData] = useState({ amount: '', date: new Date().toISOString().substr(0, 10), category: '', budget: '', note: '' });
   const [newBudget, setNewBudget] = useState({ categoryId: '', limit: '', period: 'monthly' });
@@ -108,6 +109,12 @@ export default function Budget() {
   const totalBudget = budgets.reduce((sum, b) => sum + Number(b.limit), 0);
   const activeBudgets = budgets.length;
 
+  const scrollToList = () => {
+    if (listRef.current) {
+      listRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 p-4 md:p-6 relative overflow-hidden">
       <FloatingCoins />
@@ -156,7 +163,8 @@ export default function Budget() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(16, 185, 129, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-emerald-200/50 shadow-lg relative overflow-hidden"
+            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-emerald-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+            onClick={scrollToList}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -181,7 +189,8 @@ export default function Budget() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(20, 184, 166, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-teal-200/50 shadow-lg relative overflow-hidden"
+            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-teal-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+            onClick={scrollToList}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-teal-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -206,7 +215,8 @@ export default function Budget() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(6, 182, 212, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-cyan-200/50 shadow-lg relative overflow-hidden"
+            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-cyan-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+            onClick={scrollToList}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -270,6 +280,7 @@ export default function Budget() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-emerald-200/50 relative overflow-hidden"
+          ref={listRef}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5" />
           
