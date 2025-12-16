@@ -3,15 +3,26 @@ import "./App.css";
 import Body from "./components/Body";
 import Dashboard from "./components/Dashboard";
 import IntroPage from "./components/Intro";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./utils/store";
+import { useSelector } from "react-redux";
 import Profile from "./components/Profile";
 import Budget from "./components/Budget";
 import ExpenseTracker from "./components/Expense";
 import ChangePasswordPage from "./components/ChangePassword";
 import AuthPage from "./components/Login";
 import WalletPage from "./components/Wallet";
+
+// Redirect away from login if already authenticated
+function RedirectIfAuthenticated({ children }) {
+  const user = useSelector((s) => s.user);
+  const location = useLocation();
+  if (user && user._id) {
+    return <Navigate to="/app/dashboard" replace state={{ from: location }} />;
+  }
+  return children;
+}
 
 function App() {
   return (
@@ -21,7 +32,14 @@ function App() {
           {/* First visit: Intro Page */}
           <Route path="/" element={<IntroPage />} />
 
-          <Route path="login" element={<AuthPage />} />
+          <Route
+            path="login"
+            element={
+              <RedirectIfAuthenticated>
+                <AuthPage />
+              </RedirectIfAuthenticated>
+            }
+          />
 
            <Route path="/app" element={<Body />}>
             <Route path="dashboard" index element={<Dashboard />} />

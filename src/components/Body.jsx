@@ -93,17 +93,17 @@ const Body = () => {
   if (user === undefined) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-beige">  {/* full-page background to eliminate top/bottom white gaps */}
+    <div className="flex flex-col min-h-screen bg-beige">
       <Navbar />
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
           <main className="flex-1 overflow-auto p-4 bg-beige">
             <Outlet />
           </main>
-          <Footer />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

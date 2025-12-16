@@ -8,6 +8,11 @@ import { setIncomes }    from '../utils/incomeSlice';
 import { setPeriod }     from '../utils/dashboardSlice';
 import { USER }          from '../utils/constant';
 import { useNavigate }   from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  Wallet, TrendingUp, TrendingDown, DollarSign, 
+  PiggyBank, CreditCard, AlertCircle, Plus, ArrowUpRight 
+} from 'lucide-react';
 
 import {
   PieChart, Pie, Cell, Tooltip as PieTooltip,
@@ -15,13 +20,12 @@ import {
 } from 'recharts';
 
 const colors = {
-  navy:    '#2F4156',
-  teal:    '#567C8D',
-  skyBlue: '#C8D9E6',
-  beige:   '#F5EFEB',
-  accent:  '#567C8D',
-  danger:  '#e53e3e',
+  emerald: ['#10b981', '#059669', '#047857'],
+  teal: ['#14b8a6', '#0d9488', '#0f766e'],
+  orange: ['#f97316', '#ea580c', '#c2410c'],
+  purple: ['#a855f7', '#9333ea', '#7e22ce'],
 };
+
 const MAX_SLICES = 5;
 
 export default function Dashboard() {
@@ -70,10 +74,7 @@ export default function Dashboard() {
       )
     : 0;
 
-  // Corrected wallet balance
   const walletBalance = totalIncome - totalSpent;
-      
-
 
   // Expense breakdown data
   let breakdownMap = {};
@@ -82,7 +83,7 @@ export default function Dashboard() {
     breakdownMap[name] = (breakdownMap[name] || 0) + Number(e.amount);
   });
   let breakdownData = Object.entries(breakdownMap).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
- if (breakdownData.length > MAX_SLICES) {
+  if (breakdownData.length > MAX_SLICES) {
     const top = breakdownData.slice(0, MAX_SLICES);
     const otherTotal = breakdownData
       .slice(MAX_SLICES)
@@ -90,6 +91,7 @@ export default function Dashboard() {
     top.push({ name: 'Other', value: otherTotal });
     breakdownData = top;
   }
+  
   // Spending trend data
   const trendMap = {};
   expenses.forEach(e => {
@@ -102,66 +104,176 @@ export default function Dashboard() {
 
   const handlePeriodChange = e => dispatch(setPeriod(e.target.value));
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 24
+      }
+    }
+  };
+
+  const statCards = [
+    { 
+      label: 'Wallet Balance', 
+      value: `₹${walletBalance.toLocaleString()}`, 
+      icon: Wallet, 
+      gradient: 'from-emerald-500 to-teal-500',
+      subtitle: `Income ₹${totalIncome.toLocaleString()} − Spent ₹${totalSpent.toLocaleString()}`,
+      trend: walletBalance > 0 ? 'up' : 'down'
+    },
+    { 
+      label: 'Remaining Income', 
+      value: `₹${remainingIncome.toLocaleString()}`, 
+      icon: DollarSign, 
+      gradient: 'from-blue-500 to-cyan-500',
+      subtitle: `Income ₹${totalIncome.toLocaleString()} − Budgets ₹${totalBudget.toLocaleString()}`,
+      trend: remainingIncome > 0 ? 'up' : 'down'
+    },
+    { 
+      label: 'Total Budget', 
+      value: `₹${totalBudget.toLocaleString()}`, 
+      icon: PiggyBank, 
+      gradient: 'from-purple-500 to-pink-500'
+    },
+    { 
+      label: 'Total Spent', 
+      value: `₹${totalSpent.toLocaleString()}`, 
+      icon: CreditCard, 
+      gradient: 'from-orange-500 to-red-500'
+    },
+    { 
+      label: 'Remaining Budget', 
+      value: `₹${remainingBudget.toLocaleString()}`, 
+      icon: TrendingUp, 
+      gradient: 'from-green-500 to-emerald-500',
+      trend: remainingBudget > 0 ? 'up' : 'down'
+    },
+    { 
+      label: 'Active Budgets', 
+      value: activeCount, 
+      icon: CreditCard, 
+      gradient: 'from-indigo-500 to-purple-500'
+    },
+    { 
+      label: 'Over-Budget', 
+      value: `${overBudgetPct}%`, 
+      icon: AlertCircle, 
+      gradient: overBudgetPct > 20 ? 'from-red-500 to-orange-500' : 'from-yellow-500 to-amber-500'
+    },
+  ];
 
   return (
-    <div className="p-6 bg-[#F5EFEB] min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30 p-4 md:p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-navy">Dashboard</h1>
-        <select
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4"
+      >
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+            Dashboard
+          </h1>
+          <p className="text-gray-600">Welcome back! Here's your financial overview</p>
+        </div>
+        <motion.select
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           value={period}
           onChange={handlePeriodChange}
-          className="p-2 rounded bg-white border"
+          className="px-4 py-2 rounded-xl bg-white border-2 border-emerald-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all shadow-sm"
         >
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
           <option value="yearly">Yearly</option>
-        </select>
-      </div>
+        </motion.select>
+      </motion.div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4 mb-8">
-        {/* Wallet Balance */}
-        <div className="p-4 bg-white rounded shadow" style={{ borderTop: `4px solid ${colors.teal}` }}>
-          <p className="text-sm text-gray-500">Wallet Balance</p>
-          <p className="text-xl font-semibold text-navy">₹{walletBalance.toLocaleString()}</p>
-          <p className="text-xs text-gray-400">
-            Income ₹{totalIncome.toLocaleString()} − Spent ₹{totalSpent.toLocaleString()}
-          </p>
-        </div>
-
-        {/* Remaining Income */}
-        <div className="p-4 bg-white rounded shadow" style={{ borderTop: `4px solid ${colors.navy}` }}>
-          <p className="text-sm text-gray-500">Remaining Income</p>
-          <p className="text-xl font-semibold text-navy">₹{remainingIncome.toLocaleString()}</p>
-          <p className="text-xs text-gray-400">
-            Income ₹{totalIncome.toLocaleString()} − Budgets ₹{totalBudget.toLocaleString()}
-          </p>
-        </div>
-
-        {/* Other cards */}
-        {[
-          { label: 'Total Budget',      value: `₹${totalBudget.toLocaleString()}`,    color: colors.navy },
-          { label: 'Total Spent',       value: `₹${totalSpent.toLocaleString()}`,     color: colors.teal },
-          { label: 'Remaining Budget',  value: `₹${remainingBudget.toLocaleString()}`, color: colors.skyBlue },
-          { label: 'Active Budgets',    value: activeCount,                           color: colors.beige },
-          { label: 'Over-Budget %',     value: `${overBudgetPct}%`,                   color: colors.navy },
-        ].map(c => (
-          <div key={c.label} className="p-4 bg-white rounded shadow" style={{ borderTop: `4px solid ${c.color}` }}>
-            <p className="text-sm text-gray-500">{c.label}</p>
-            <p className="text-xl font-semibold text-navy">{c.value}</p>
-          </div>
+      {/* Stats Cards */}
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4 mb-8"
+      >
+        {statCards.map((card, idx) => (
+          <motion.div
+            key={card.label}
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+            className="relative group"
+          >
+            <div className={`h-full p-5 bg-gradient-to-br ${card.gradient} rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 text-white overflow-hidden`}>
+              {/* Background decoration */}
+              <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm font-medium text-white/80">{card.label}</p>
+                  <motion.div
+                    animate={{ rotate: [0, 10, -10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+                  >
+                    <card.icon className="w-5 h-5 text-white/80" />
+                  </motion.div>
+                </div>
+                
+                <div className="flex items-end justify-between">
+                  <p className="text-2xl font-bold">{card.value}</p>
+                  {card.trend && (
+                    <motion.div
+                      animate={{ y: [0, -3, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      {card.trend === 'up' ? (
+                        <TrendingUp className="w-5 h-5" />
+                      ) : (
+                        <TrendingDown className="w-5 h-5" />
+                      )}
+                    </motion.div>
+                  )}
+                </div>
+                
+                {card.subtitle && (
+                  <p className="text-xs text-white/70 mt-2">{card.subtitle}</p>
+                )}
+              </div>
+              
+              {/* Hover glow effect */}
+              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300 rounded-2xl"></div>
+            </div>
+          </motion.div>
         ))}
-      </div>
-
+      </motion.div>
 
       {/* Charts */}
-{/* 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-lg p-6 shadow">
-          <h2 className="text-xl font-semibold text-navy mb-4">Expense Breakdown</h2>
+      <motion.div 
+        variants={containerVariants}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"
+      >
+        {/* Expense Breakdown */}
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-emerald-100/50">
+          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <PiggyBank className="w-5 h-5 text-emerald-600" />
+            Expense Breakdown
+          </h2>
           {breakdownData.length ? (
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={280}>
               <PieChart>
                 <Pie
                   data={breakdownData}
@@ -169,121 +281,151 @@ export default function Dashboard() {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
-                  label
-                >
-                  {breakdownData.map((_, i) => (
-                    <Cell key={i} fill={i % 2 ? colors.teal : colors.accent} />
-                  ))}
-                </Pie>
-                <PieTooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          ) : (
-            <p className="text-gray-500">No expenses yet</p>
-          )}
-        </div> */}
-
-   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-         <div className="bg-white rounded-lg p-6 shadow">
-           <h2 className="text-xl font-semibold text-navy mb-4">Expense Breakdown</h2>
-          {breakdownData.length ? (
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={breakdownData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label
+                  outerRadius={90}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
                   {breakdownData.map((_, idx) => (
-                    <Cell key={idx} fill={idx % 2 ? colors.teal : colors.navy} />
+                    <Cell key={idx} fill={colors.emerald[idx % colors.emerald.length]} />
                   ))}
                 </Pie>
                 <PieTooltip />
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <p className="text-gray-500">No expenses yet</p>
+            <div className="h-64 flex items-center justify-center">
+              <p className="text-gray-400">No expenses yet. Start tracking!</p>
+            </div>
           )}
-        </div>
-        <div className="bg-white rounded-lg p-6 shadow">
-          <h2 className="text-xl font-semibold text-navy mb-4">Spending Trend</h2>
+        </motion.div>
+
+        {/* Spending Trend */}
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-teal-100/50">
+          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-teal-600" />
+            Spending Trend
+          </h2>
           {trendData.length ? (
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={280}>
               <LineChart data={trendData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#14b8a6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="date" tick={{fontSize: 12}} />
+                <YAxis tick={{fontSize: 12}} />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke={colors.teal}
-                  strokeWidth={2}
-                  dot={{ r: 3 }}
+                  stroke="#14b8a6"
+                  strokeWidth={3}
+                  dot={{ fill: '#0d9488', r: 4 }}
+                  activeDot={{ r: 6 }}
+                  fill="url(#colorValue)"
                 />
                 <LineTooltip />
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <p className="text-gray-500">No expenses yet</p>
+            <div className="h-64 flex items-center justify-center">
+              <p className="text-gray-400">No spending data yet</p>
+            </div>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Recent Activity & Quick Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="col-span-2 bg-white rounded-lg p-6 shadow">
-          <h2 className="text-xl font-semibold text-navy mb-4">Recent Activity</h2>
-          <ul className="space-y-4 max-h-80 overflow-y-auto">
-            {expenses.slice(0, 10).map(e => {
+      <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Activity */}
+        <motion.div variants={cardVariants} className="col-span-2 bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-gray-100">
+          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <CreditCard className="w-5 h-5 text-purple-600" />
+            Recent Activity
+          </h2>
+          <div className="space-y-3 max-h-96 overflow-y-auto">
+            {expenses.slice(0, 10).map((e, idx) => {
               const name = categories.find(c => c._id === e.category)?.name || 'Unknown';
               return (
-                <li key={e._id} className="flex justify-between">
-                  <div>
-                    <p className="font-medium text-navy">{name}</p>
-                    <p className="text-sm text-gray-500">{new Date(e.date).toLocaleDateString()}</p>
+                <motion.div
+                  key={e._id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  whileHover={{ x: 5, backgroundColor: 'rgba(16, 185, 129, 0.05)' }}
+                  className="flex justify-between items-center p-3 rounded-xl border border-gray-100 hover:border-emerald-200 transition-all"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-semibold">
+                      {name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">{name}</p>
+                      <p className="text-sm text-gray-500">{new Date(e.date).toLocaleDateString()}</p>
+                    </div>
                   </div>
-                  <span className="font-semibold text-navy">-₹{e.amount}</span>
-                </li>
+                  <span className="font-bold text-red-600">-₹{e.amount}</span>
+                </motion.div>
               );
             })}
-          </ul>
-        </div>
+          </div>
+        </motion.div>
       
-  <div className="bg-white rounded-lg p-6 shadow flex flex-col gap-4">
-          <h2 className="text-xl font-semibold text-[#2F4156] mb-2">Quick Actions</h2>
+        {/* Quick Actions */}
+        <motion.div variants={cardVariants} className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-6 shadow-lg text-white">
+          <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <Plus className="w-5 h-5" />
+            Quick Actions
+          </h2>
+          
+          <div className="space-y-3">
+            {[
+              { label: 'Add Expense', path: '/app/expense', icon: Plus, color: 'from-orange-400 to-red-400' },
+              { label: 'Add Budget', path: '/app/budget', icon: PiggyBank, color: 'from-purple-400 to-pink-400' },
+              { label: 'Add Income', path: '/app/income', icon: DollarSign, color: 'from-green-400 to-emerald-400' },
+            ].map((action, idx) => (
+              <motion.button
+                key={action.path}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + idx * 0.1 }}
+                whileHover={{ scale: 1.05, x: 5 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate(action.path)}
+                className="w-full flex items-center justify-between px-4 py-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${action.color} flex items-center justify-center`}>
+                    <action.icon className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-medium">{action.label}</span>
+                </div>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </motion.button>
+            ))}
+          </div>
 
-          {/* Always visible buttons with strong contrast */}
-          <button
-            onClick={() => navigate('/app/expense')}
-            className="flex-1 px-4 py-2 bg-[#567C8D] text-white font-medium rounded hover:bg-[#2F4156] transition"
+          {/* Stats Mini Cards */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-6 pt-6 border-t border-white/20"
           >
-            + Add Expense
-          </button>
-          <button
-            onClick={() => navigate('/app/budget')}
-            className="flex-1 px-4 py-2 bg-[#567C8D] text-white font-medium rounded hover:bg-[#2F4156] transition"
-          >
-            + Add Budget
-          </button>
-          <button
-            onClick={() => navigate('/app/category')}
-            className="flex-1 px-4 py-2 bg-[#567C8D] text-white font-medium rounded hover:bg-[#2F4156] transition"
-          >
-            Manage Categories
-          </button>
-          <button
-            onClick={() => navigate('/app/income')}
-            className="flex-1 px-4 py-2 bg-[#567C8D] text-white font-medium rounded hover:bg-[#2F4156] transition"
-          >
-            + Add Income
-          </button>
-        </div>
-      </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <p className="text-xs text-white/70">This Month</p>
+                <p className="text-lg font-bold">₹{totalSpent.toLocaleString()}</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <p className="text-xs text-white/70">Budgets</p>
+                <p className="text-lg font-bold">{activeCount}</p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

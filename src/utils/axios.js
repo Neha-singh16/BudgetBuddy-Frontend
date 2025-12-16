@@ -1,5 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000";
+const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+axios.defaults.baseURL = baseURL;
 axios.defaults.withCredentials = true;
 
