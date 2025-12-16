@@ -1,7 +1,8 @@
 // src/components/ExpenseTracker.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import useHashScroll from "../utils/useHashScroll";
 import { setExpenses } from "../utils/expenseSlice";
 import { setCategories } from "../utils/categorySlice";
 import { setBudgets } from "../utils/budgetSlice";
@@ -51,6 +52,8 @@ const FloatingReceipts = () => {
 export default function ExpenseTracker() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const listRef = useRef(null);
+  useHashScroll();
   const expenses = useSelector((s) => s.expense.expenses);
   const categories = useSelector((s) => s.category.categories);
   const budgets = useSelector((s) => s.budget.budgets);
@@ -200,7 +203,10 @@ export default function ExpenseTracker() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(249, 115, 22, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-orange-200/50 shadow-lg relative overflow-hidden"
+            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-orange-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+            onClick={() => {
+              listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -225,7 +231,8 @@ export default function ExpenseTracker() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(239, 68, 68, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-lg relative overflow-hidden"
+            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+            onClick={() => listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -250,7 +257,8 @@ export default function ExpenseTracker() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(236, 72, 153, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-pink-200/50 shadow-lg relative overflow-hidden"
+            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-pink-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+            onClick={() => listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -432,7 +440,9 @@ export default function ExpenseTracker() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          id="expenses-list"
           className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-orange-200/50 relative overflow-hidden"
+          ref={listRef}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5" />
           

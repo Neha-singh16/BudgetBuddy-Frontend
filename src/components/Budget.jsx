@@ -2,6 +2,7 @@
 
 // src/components/Budget.jsx
 import React, { useEffect, useState, useRef } from 'react';
+import useHashScroll from '../utils/useHashScroll';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBudgets, addBudget, deleteBudget } from '../utils/budgetSlice';
 import { setCategories } from '../utils/categorySlice';
@@ -49,6 +50,7 @@ const FloatingCoins = () => {
 };
 
 export default function Budget() {
+  useHashScroll();
   const dispatch = useDispatch();
   const budgets = useSelector(state => state.budget.budgets);
   const categories = useSelector(state => state.category.categories);
@@ -285,6 +287,7 @@ export default function Budget() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          id="budgets-list"
           className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-emerald-200/50 relative overflow-hidden"
           ref={listRef}
         >

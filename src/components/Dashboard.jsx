@@ -177,6 +177,16 @@ export default function Dashboard() {
     },
   ];
 
+  const handleStatClick = (label) => {
+    if (label === 'Total Budget' || label === 'Active Budgets' || label === 'Remaining Budget') {
+      navigate('/app/budget#budgets-list');
+    } else if (label === 'Total Spent' || label === 'Wallet Balance') {
+      navigate('/app/expense#expenses-list');
+    } else if (label === 'Remaining Income') {
+      navigate('/app/income');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30 p-4 md:p-6">
       {/* Header */}
@@ -216,7 +226,8 @@ export default function Dashboard() {
             key={card.label}
             variants={cardVariants}
             whileHover={{ y: -5, scale: 1.02 }}
-            className="relative group"
+            className="relative group cursor-pointer"
+            onClick={() => handleStatClick(card.label)}
           >
             <div className={`h-full p-5 bg-gradient-to-br ${card.gradient} rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 text-white overflow-hidden`}>
               {/* Background decoration */}
