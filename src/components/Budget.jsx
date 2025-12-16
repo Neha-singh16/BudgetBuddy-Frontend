@@ -57,6 +57,7 @@ export default function Budget() {
   const [formData, setFormData] = useState({ amount: '', date: new Date().toISOString().substr(0, 10), category: '', budget: '', note: '' });
   const [newBudget, setNewBudget] = useState({ categoryId: '', limit: '', period: 'monthly' });
   const [error, setError] = useState('');
+  const [filterPeriod, setFilterPeriod] = useState('all'); // all | monthly | weekly | yearly
 
   // Fetch categories & budgets
   useEffect(() => {
@@ -115,6 +116,11 @@ export default function Budget() {
     }
   };
 
+  // Derived filtered budgets
+  const visibleBudgets = filterPeriod === 'all'
+    ? budgets
+    : budgets.filter(b => (b.period || '').toLowerCase() === filterPeriod);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 p-4 md:p-6 relative overflow-hidden">
       <FloatingCoins />
@@ -164,7 +170,7 @@ export default function Budget() {
             transition={{ delay: 0.1 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(16, 185, 129, 0.3)' }}
             className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-emerald-200/50 shadow-lg relative overflow-hidden cursor-pointer"
-            onClick={scrollToList}
+            onClick={() => { setFilterPeriod('all'); scrollToList(); }}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -190,7 +196,7 @@ export default function Budget() {
             transition={{ delay: 0.2 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(20, 184, 166, 0.3)' }}
             className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-teal-200/50 shadow-lg relative overflow-hidden cursor-pointer"
-            onClick={scrollToList}
+            onClick={() => { setFilterPeriod('monthly'); scrollToList(); }}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-teal-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -216,7 +222,7 @@ export default function Budget() {
             transition={{ delay: 0.3 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(6, 182, 212, 0.3)' }}
             className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-cyan-200/50 shadow-lg relative overflow-hidden cursor-pointer"
-            onClick={scrollToList}
+            onClick={() => { setFilterPeriod('yearly'); scrollToList(); }}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -300,9 +306,39 @@ export default function Budget() {
               </motion.div>
             </div>
 
+            {/* Quick filters */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {[
+                { key: 'all', label: 'All' },
+                { key: 'monthly', label: 'Monthly' },
+                { key: 'weekly', label: 'Weekly' },
+                { key: 'yearly', label: 'Yearly' },
+              ].map(f => (
+                <button
+                  key={f.key}
+                  onClick={() => setFilterPeriod(f.key)}
+                  className={`px-3 py-1.5 text-sm rounded-full border transition-all ${
+                    filterPeriod === f.key
+                      ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                      : 'bg-white text-gray-700 border-gray-200 hover:border-emerald-300 hover:text-emerald-700'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+              {filterPeriod !== 'all' && (
+                <button
+                  onClick={() => setFilterPeriod('all')}
+                  className="px-3 py-1.5 text-sm rounded-full bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200"
+                >
+                  Clear Filter
+                </button>
+              )}
+            </div>
+
             <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
               <AnimatePresence>
-                {budgets.length === 0 ? (
+                {visibleBudgets.length === 0 ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -318,7 +354,7 @@ export default function Budget() {
                     <p className="text-gray-400 text-sm">Create your first budget to start tracking!</p>
                   </motion.div>
                 ) : (
-                  budgets.map((b, idx) => {
+                  visibleBudgets.map((b, idx) => {
                     const catName = getCatName(b.categoryId);
                     const colors = [
                       { from: 'from-emerald-500', to: 'to-teal-500', bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600' },
