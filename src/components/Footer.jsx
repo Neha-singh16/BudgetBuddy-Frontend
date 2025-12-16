@@ -1,130 +1,81 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Wallet, Sparkles, Mail, Phone, MapPin, Github, Twitter, Linkedin , Instagram } from "lucide-react";
+import { Wallet, Github, Linkedin, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const links = [
+// Minimal links and socials to keep the footer compact and elegant
+const nav = [
   { label: "Dashboard", to: "/app/dashboard" },
-  { label: "Budgets", to: "/app/budget" },
-  { label: "Expenses", to: "/app/expense" },
+  { label: "Budget", to: "/app/budget" },
+  { label: "Expense", to: "/app/expense" },
   { label: "Profile", to: "/app/profile" },
 ];
 
 const socials = [
   { Icon: Github, href: "https://github.com/Neha-singh16" },
-  { Icon: Instagram, href: "https://www.instagram.com/nehaa16.__/" },
   { Icon: Linkedin, href: "https://www.linkedin.com/in/neha-singh-2142392a1/" },
+  { Icon: Instagram, href: "https://www.instagram.com/nehaa16.__/" },
 ];
 
-const Footer = () => {
+// A slimmer, neutral footer that matches the app's emerald/teal theme
+export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-950 text-emerald-50 border-t border-white/10">
-      {/* Glow accents */}
-      <div className="absolute -left-20 -top-20 w-64 h-64 rounded-full bg-emerald-500/20 blur-3xl" />
-      <div className="absolute right-10 -bottom-24 w-72 h-72 rounded-full bg-cyan-400/15 blur-3xl" />
+    <footer className="relative border-t border-white/10 bg-gradient-to-r from-emerald-700 via-teal-700 to-green-700 text-emerald-50">
+      {/* top accent line */}
+      <div className="h-0.5 w-full bg-gradient-to-r from-emerald-400/60 via-teal-300/60 to-green-400/60" />
 
-      <div className="relative mx-auto max-w-6xl px-6 md:px-10 py-10 md:py-12 grid gap-10 md:gap-12 md:grid-cols-4 items-start">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-5 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Brand */}
-        <div className="space-y-4 md:col-span-1">
-          <div className="inline-flex items-center gap-3">
-            <motion.div
-              animate={{ rotate: [0, 8, -8, 0] }}
-              transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-              className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-400 flex items-center justify-center text-slate-950 shadow-lg"
-            >
-              <Wallet className="w-6 h-6" />
-            </motion.div>
-            <div>
-              <p className="text-sm text-emerald-100/80">Premium finance</p>
-              <p className="text-xl font-black">BudgetBuddy</p>
-            </div>
-          </div>
-          <p className="text-emerald-100/80 leading-relaxed max-w-sm">
-            Calm, animated budgeting that keeps every rupee accountable and your data secure.
-          </p>
-          <div className="flex items-center gap-2 text-emerald-100/80 text-sm">
-            <Sparkles className="w-4 h-4 text-emerald-300" />
-            <span>Built for focus and clarity.</span>
-          </div>
+        <div className="flex items-center gap-2">
+          <motion.div
+            whileHover={{ rotate: 8, scale: 1.02 }}
+            className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-300 to-teal-300 flex items-center justify-center text-emerald-900 shadow-sm"
+          >
+            <Wallet className="w-4 h-4" />
+          </motion.div>
+          <span className="text-sm sm:text-base font-semibold tracking-wide">Budget<span className="text-emerald-200">Buddy</span></span>
         </div>
 
-        {/* Navigation */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-semibold uppercase tracking-[0.08em] text-emerald-200">Navigate</h4>
-          <div className="grid grid-cols-2 gap-3 text-emerald-100/80 text-sm">
-            {links.map((link, idx) => (
-              <motion.div
-                key={link.label}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * idx }}
-              >
-                <Link
-                  to={link.to}
-                  className="hover:text-white transition-colors"
-                >
-                  {link.label}
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Contact */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-semibold uppercase tracking-[0.08em] text-emerald-200">Get in touch</h4>
-          <div className="space-y-3 text-sm text-emerald-100/80">
-            <div className="flex items-center gap-3">
-              <Mail className="w-4 h-4 text-emerald-300" />
-              <span>hello@budgetbuddy.app</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Phone className="w-4 h-4 text-emerald-300" />
-              <span>+91 98765 43210</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <MapPin className="w-4 h-4 text-emerald-300" />
-              <span>Mumbai, India</span>
-            </div>
-          </div>
-        </div>
+        {/* Nav (condensed) */}
+        <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm text-emerald-50/90">
+          {nav.map((n) => (
+            <Link key={n.to} to={n.to} className="hover:text-white transition-colors">
+              {n.label}
+            </Link>
+          ))}
+        </nav>
 
         {/* Socials */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-semibold uppercase tracking-[0.08em] text-emerald-200">Connect</h4>
-          <div className="flex items-center gap-3">
-            {socials.map(({ Icon, href }, idx) => (
-              <motion.a
-                key={href}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                whileHover={{ scale: 1.08, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * idx }}
-                className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-emerald-50 hover:text-white hover:border-emerald-200/60"
-              >
-                <Icon className="w-5 h-5" />
-              </motion.a>
-            ))}
-          </div>
+        <div className="flex items-center gap-2">
+          {socials.map(({ Icon, href }) => (
+            <motion.a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              whileHover={{ scale: 1.06, y: -1 }}
+              whileTap={{ scale: 0.96 }}
+              className="w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-emerald-50 hover:text-white hover:border-emerald-200/70"
+            >
+              <Icon className="w-4 h-4" />
+            </motion.a>
+          ))}
         </div>
       </div>
 
-      <div className="relative border-t border-white/10 bg-slate-950/60">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-emerald-100/70">
-          <span>© {new Date().getFullYear()} BudgetBuddy. All rights reserved.</span>
-          <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Security</a>
+      {/* Bottom bar */}
+      <div className="border-t border-white/10/60">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] sm:text-xs text-emerald-50/80">
+          <span>© {new Date().getFullYear()} BudgetBuddy</span>
+          <div className="flex items-center gap-3">
+            <a className="hover:text-white" href="#">Privacy</a>
+            <span className="opacity-40">•</span>
+            <a className="hover:text-white" href="#">Terms</a>
+            <span className="opacity-40">•</span>
+            <a className="hover:text-white" href="#">Security</a>
           </div>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
