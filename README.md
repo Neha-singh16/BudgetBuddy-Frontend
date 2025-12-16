@@ -1,53 +1,417 @@
-# BudgetBuddy
+# BudgetBuddy Frontend 💰
 
-BudgetBuddy is a full‑stack personal finance tracker that helps users manage budgets, track expenses and incomes, and visualize financial health. This repository includes the React front‑end (Vite + Tailwind) and a Node.js/Express back‑end with MongoDB.
+A modern, feature-rich personal finance management application built with React, Redux Toolkit, and Tailwind CSS. BudgetBuddy helps users track expenses, manage budgets, monitor income, and gain insights into their financial health through interactive visualizations.
 
-Use this README to quickly set up both apps, understand the architecture and data flow, and locate key files and API routes.
+## 🌟 Features
 
-## Overview
- - Frontend: React (Vite), Redux Toolkit, Axios, Tailwind CSS
- - Backend: Node.js, Express, MongoDB (Mongoose), JWT auth
- - Features: User auth, dashboard insights, budgets, categories, expenses, incomes, profile management
+### Core Functionality
+- **User Authentication**: Secure login/signup with JWT-based authentication
+- **Dashboard Analytics**: Real-time financial overview with charts and metrics
+- **Expense Tracking**: Add, edit, delete, and categorize expenses
+- **Budget Management**: Create and monitor budgets with visual progress indicators
+- **Income Tracking**: Record and manage multiple income sources
+- **Category System**: Pre-defined and custom categories for better organization
+- **Profile Management**: Update user information and change password
+- **Responsive Design**: Mobile-first, fully responsive UI
 
-## Folder Structure
- - Frontend app: `BudgetApp/`
- - Backend API: `budgetBuddy-backend/`
+### UI/UX Highlights
+- Modern, clean interface with Tailwind CSS
+- Smooth animations with Framer Motion
+- Interactive charts using Recharts
+- Real-time data updates
+- Intuitive navigation with React Router
 
-Key frontend files:
- - `src/App.jsx` – app shell and routing
- - `src/components/*` – UI sections (Dashboard, Budget, Expense, Wallet, etc.)
- - `src/utils/*` – Redux slices, store, axios instance, constants
+## 🛠️ Tech Stack
 
-Key backend files:
- - `budgetBuddy-backend/app.js` – Express app bootstrap
- - `budgetBuddy-backend/src/config/database.js` – Mongo connection
- - `budgetBuddy-backend/src/config/middleware/auth.js` – JWT auth middleware
- - `budgetBuddy-backend/src/config/router/*` – API route modules
- - `budgetBuddy-backend/src/config/model/*` – Mongoose models
- - `budgetBuddy-backend/src/config/utils/validate.js` – validation helpers
+| Technology | Purpose |
+|-----------|---------|
+| **React 19** | UI framework |
+| **Vite** | Build tool and dev server |
+| **Redux Toolkit** | State management |
+| **React Router v7** | Client-side routing |
+| **Tailwind CSS v4** | Styling framework |
+| **Axios** | HTTP client |
+| **Recharts** | Data visualization |
+| **Framer Motion** | Animations |
+| **Lucide React** | Icon library |
+| **Heroicons** | Additional icons |
 
-## Prerequisites
- - Node.js LTS (v18+) and npm
- - MongoDB (local or Atlas connection string)
- - Windows PowerShell/Terminal (commands provided for Windows)
+## 📁 Project Structure
 
-## Quick Start
-
-### 1) Clone and install
-```powershell
-# From your workspace root
-# Frontend
-cd BudgetApp
-npm install
-
-# Backend
-cd ../budgetBuddy-backend
-npm install
+```
+BudgetApp/
+├── public/                    # Static assets
+├── src/
+│   ├── components/           # React components
+│   │   ├── Intro.jsx        # Landing/intro page
+│   │   ├── Login.jsx        # Authentication page
+│   │   ├── Body.jsx         # Main layout wrapper
+│   │   ├── Navbar.jsx       # Top navigation
+│   │   ├── Sidebar.jsx      # Side navigation menu
+│   │   ├── Dashboard.jsx    # Analytics dashboard
+│   │   ├── Expense.jsx      # Expense tracker
+│   │   ├── Budget.jsx       # Budget management
+│   │   ├── Wallet.jsx       # Income management
+│   │   ├── Profile.jsx      # User profile
+│   │   ├── ChangePassword.jsx # Password update
+│   │   └── Footer.jsx       # Footer component
+│   ├── utils/               # Redux & utilities
+│   │   ├── store.js        # Redux store configuration
+│   │   ├── userSlice.js    # User state management
+│   │   ├── expenseSlice.js # Expense state
+│   │   ├── budgetSlice.js  # Budget state
+│   │   ├── incomeSlice.js  # Income state
+│   │   ├── categorySlice.js # Category state
+│   │   ├── dashboardSlice.js # Dashboard state
+│   │   ├── menuSlice.js    # UI state
+│   │   ├── axios.js        # Axios instance
+│   │   └── constant.js     # API endpoints & constants
+│   ├── App.jsx             # Main app component
+│   ├── App.css             # Global styles
+│   ├── main.jsx            # App entry point
+│   └── index.css           # Tailwind imports
+├── index.html              # HTML template
+├── vite.config.js          # Vite configuration
+├── tailwind.config.js      # Tailwind configuration
+├── postcss.config.cjs      # PostCSS configuration
+├── eslint.config.js        # ESLint configuration
+└── package.json            # Dependencies & scripts
 ```
 
-### 2) Configure environment variables
+## 🚀 Getting Started
 
-Backend `.env` (create in `budgetBuddy-backend/`):
+### Prerequisites
+- **Node.js** v18 or higher
+- **npm** or **yarn**
+- Backend server running (see backend README)
+
+### Installation
+
+1. **Navigate to frontend directory**
+   ```powershell
+   cd BudgetApp
+   ```
+
+2. **Install dependencies**
+   ```powershell
+   npm install
+   ```
+
+3. **Configure environment** (Optional)
+   
+   Create `.env` file if needed to override backend URL:
+   ```env
+   VITE_API_URL=http://localhost:3000
+   ```
+
+4. **Start development server**
+   ```powershell
+   npm run dev
+   ```
+
+   The app will open at `http://localhost:5173`
+
+### Available Scripts
+
+```powershell
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run lint     # Run ESLint
+```
+
+## 🔄 Application Flow
+
+### 1. Authentication Flow
+```
+User visits "/" (Intro Page)
+  ↓
+Clicks "Get Started" → Navigates to "/login"
+  ↓
+Enters credentials → POST /login
+  ↓
+Receives JWT token in cookie
+  ↓
+Redirects to "/app/dashboard"
+```
+
+### 2. Dashboard Flow
+```
+Dashboard loads → Fetches data from 4 APIs in parallel:
+  ├── GET /user/budget    (Budget data)
+  ├── GET /user/expense   (Expense data)
+  ├── GET /category       (Categories)
+  └── GET /user/income    (Income data)
+        ↓
+  Data stored in Redux slices
+        ↓
+  Components re-render with updated data
+        ↓
+  Charts & metrics calculated and displayed
+```
+
+### 3. Expense Management Flow
+```
+User navigates to "/app/expense"
+  ↓
+View all expenses with filters/search
+  ↓
+Add new expense:
+  - Select category
+  - Enter amount & description
+  - Choose date
+  - Select budget (optional)
+  ↓
+POST /user/expense
+  ↓
+Redux state updated → UI refreshes
+```
+
+### 4. Budget Management Flow
+```
+User navigates to "/app/budget"
+  ↓
+View all budgets with progress bars
+  ↓
+Create new budget:
+  - Set limit amount
+  - Choose category
+  - Set time period
+  ↓
+POST /user/budget
+  ↓
+Budget tracked against expenses
+  ↓
+Visual indicators show spending progress
+```
+
+## 🗂️ State Management (Redux)
+
+### Redux Slices
+
+| Slice | State | Purpose |
+|-------|-------|---------|
+| `userSlice` | User profile, auth status | Manages logged-in user data |
+| `expenseSlice` | Expenses array | Tracks all user expenses |
+| `budgetSlice` | Budgets array | Manages budget configurations |
+| `incomeSlice` | Income sources | Tracks income entries |
+| `categorySlice` | Categories | Stores expense categories |
+| `dashboardSlice` | Period, filters | Dashboard view preferences |
+| `menuSlice` | UI state | Sidebar/menu visibility |
+
+### Example: Fetching & Storing Data
+```javascript
+// In component
+import { setExpenses } from '../utils/expenseSlice';
+import { useDispatch } from 'react-redux';
+
+const dispatch = useDispatch();
+
+// Fetch data
+const response = await fetch('http://localhost:3000/user/expense', {
+  credentials: 'include'
+});
+const data = await response.json();
+
+// Update Redux store
+dispatch(setExpenses(data));
+```
+
+## 🎨 Styling Architecture
+
+- **Tailwind CSS v4** for utility-first styling
+- **Custom color palette** matching brand identity
+- **Responsive breakpoints**: mobile, tablet, desktop
+- **Dark mode ready** (can be implemented)
+- **Framer Motion** for smooth transitions and animations
+
+## 🔗 API Integration
+
+### Base URL Configuration
+```javascript
+// src/utils/constant.js
+export const USER = "http://localhost:3000";
+```
+
+### API Endpoints Used
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/signup` | Create new account |
+| POST | `/login` | Authenticate user |
+| POST | `/logout` | End session |
+| GET | `/profile` | Get user profile |
+| PATCH | `/profile` | Update profile |
+| PATCH | `/profile/password` | Change password |
+| GET | `/user/expense` | Fetch all expenses |
+| POST | `/user/expense` | Create expense |
+| PATCH | `/user/expense/:id` | Update expense |
+| DELETE | `/user/expense/:id` | Delete expense |
+| GET | `/user/budget` | Fetch all budgets |
+| POST | `/user/budget` | Create budget |
+| PATCH | `/user/budget/:id` | Update budget |
+| DELETE | `/user/budget/:id` | Delete budget |
+| GET | `/user/income` | Fetch all income |
+| POST | `/user/income` | Create income |
+| PATCH | `/user/income/:id` | Update income |
+| DELETE | `/user/income/:id` | Delete income |
+| GET | `/category` | Fetch categories |
+| POST | `/category` | Create custom category |
+
+### Authentication
+All requests include credentials:
+```javascript
+fetch(url, { credentials: 'include' })
+```
+
+JWT token stored in httpOnly cookie for security.
+
+## 🧩 Key Components
+
+### Dashboard
+- **Metrics Cards**: Total income, budget, spent, remaining
+- **Pie Chart**: Expense breakdown by category
+- **Line Chart**: Spending trends over time
+- **Budget Progress**: Visual indicators for each budget
+
+### Expense Tracker
+- **Expense List**: Filterable, searchable table
+- **Add Form**: Modal with category/budget selection
+- **Quick Actions**: Edit, delete inline
+- **Statistics**: Monthly/weekly totals
+
+### Budget Manager
+- **Budget Cards**: Visual progress indicators
+- **Budget Form**: Set limits by category
+- **Alerts**: Notifications when exceeding limits
+- **Analytics**: Spending vs. budget comparison
+
+### Wallet (Income)
+- **Income Sources**: List all income entries
+- **Add Income**: Form for new income
+- **Summary**: Total income calculation
+- **History**: Track income over time
+
+## 🔒 Security Features
+
+- JWT-based authentication
+- httpOnly cookies prevent XSS attacks
+- Credentials sent with every request
+- Protected routes (redirect to login if not authenticated)
+- Form validation on client side
+- Secure password requirements
+
+## 📱 Responsive Design
+
+- **Mobile First**: Optimized for small screens
+- **Breakpoints**:
+  - Mobile: < 640px
+  - Tablet: 640px - 1024px
+  - Desktop: > 1024px
+- **Adaptive Navigation**: Hamburger menu on mobile
+- **Touch-friendly**: Large tap targets
+
+## 🐛 Debugging Tips
+
+### Common Issues
+
+**Problem**: API requests fail with CORS error
+- **Solution**: Ensure backend CORS allows `http://localhost:5173`
+
+**Problem**: Login successful but redirect doesn't work
+- **Solution**: Check Redux user state is populated
+
+**Problem**: Data not updating after API call
+- **Solution**: Verify Redux dispatch is called after fetch
+
+### Development Tools
+```javascript
+// Redux DevTools - inspect state changes
+// React DevTools - component hierarchy
+// Network tab - monitor API calls
+```
+
+## 🚀 Production Build
+
+### Build for Production
+```powershell
+npm run build
+```
+
+### Preview Production Build
+```powershell
+npm run preview
+```
+
+### Deployment Checklist
+- [ ] Update API URL to production backend
+- [ ] Configure environment variables
+- [ ] Test all features in production mode
+- [ ] Optimize bundle size
+- [ ] Enable compression
+- [ ] Configure CDN for static assets
+
+## 🔧 Configuration Files
+
+### Vite Config
+```javascript
+// vite.config.js
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5173,
+    proxy: { /* optional proxy config */ }
+  }
+})
+```
+
+### Tailwind Config
+```javascript
+// tailwind.config.js
+export default {
+  content: ['./index.html', './src/**/*.{js,jsx}'],
+  theme: { extend: { /* custom colors, fonts */ } }
+}
+```
+
+## 📈 Performance Optimization
+
+- Code splitting with React.lazy (can be added)
+- Memoization with React.memo for heavy components
+- Debounced search/filter inputs
+- Optimized re-renders with proper Redux selectors
+- Image optimization
+- Bundle size monitoring
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 🙏 Acknowledgments
+
+- React team for amazing framework
+- Tailwind CSS for utility-first CSS
+- Recharts for beautiful charts
+- All open-source contributors
+
+## 📞 Support
+
+For issues and questions:
+- Create an issue on GitHub
+- Check existing documentation
+- Review backend README for API details
+
+---
+
+**Happy Budgeting! 💰📊**
 ```
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/budgetbuddy
