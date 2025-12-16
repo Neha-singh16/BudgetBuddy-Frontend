@@ -1,14 +1,17 @@
 // src/components/WalletPage.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIncomes, addIncome, updateIncome,  removeIncome} from '../utils/incomeSlice';
 import { USER } from '../utils/constant';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, Plus, Trash2, TrendingUp, DollarSign, Briefcase } from 'lucide-react';
+import useHashScroll from '../utils/useHashScroll';
 
 export default function WalletPage() {
   const dispatch = useDispatch();
   const incomes = useSelector(state => state.income.list);
+  const listRef = useRef(null);
+  useHashScroll();
   const [form, setForm] = useState({ amount: '', source: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -89,7 +92,8 @@ export default function WalletPage() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 rounded-2xl p-8 mb-6 shadow-2xl text-white relative overflow-hidden"
+        className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 rounded-2xl p-8 mb-6 shadow-2xl text-white relative overflow-hidden cursor-pointer"
+        onClick={() => listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
       >
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16" />
@@ -173,7 +177,9 @@ export default function WalletPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
+        id="income-list"
         className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-green-100/50"
+        ref={listRef}
       >
         <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <DollarSign className="w-5 h-5 text-green-600" />

@@ -183,7 +183,7 @@ export default function Dashboard() {
     } else if (label === 'Total Spent' || label === 'Wallet Balance') {
       navigate('/app/expense#expenses-list');
     } else if (label === 'Remaining Income') {
-      navigate('/app/income');
+      navigate('/app/income#income-list');
     }
   };
 
