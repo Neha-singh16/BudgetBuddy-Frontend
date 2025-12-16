@@ -11,7 +11,7 @@ export default function WalletPage() {
   const dispatch = useDispatch();
   const incomes = useSelector(state => state.income.list);
   const listRef = useRef(null);
-  useHashScroll();
+  useHashScroll(100);
   const [form, setForm] = useState({ amount: '', source: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -93,7 +93,13 @@ export default function WalletPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 rounded-2xl p-8 mb-6 shadow-2xl text-white relative overflow-hidden cursor-pointer"
-        onClick={() => listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        onClick={() => {
+          if (listRef.current) {
+            const rectTop = listRef.current.getBoundingClientRect().top;
+            const top = rectTop + window.scrollY - 100;
+            window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+          }
+        }}
       >
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16" />

@@ -53,7 +53,7 @@ export default function ExpenseTracker() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const listRef = useRef(null);
-  useHashScroll();
+  useHashScroll(100);
   const expenses = useSelector((s) => s.expense.expenses);
   const categories = useSelector((s) => s.category.categories);
   const budgets = useSelector((s) => s.budget.budgets);
@@ -205,7 +205,11 @@ export default function ExpenseTracker() {
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(249, 115, 22, 0.3)' }}
             className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-orange-200/50 shadow-lg relative overflow-hidden cursor-pointer"
             onClick={() => {
-              listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              if (listRef.current) {
+                const rectTop = listRef.current.getBoundingClientRect().top;
+                const top = rectTop + window.scrollY - 100;
+                window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+              }
             }}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-2xl" />
@@ -232,7 +236,13 @@ export default function ExpenseTracker() {
             transition={{ delay: 0.2 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(239, 68, 68, 0.3)' }}
             className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-lg relative overflow-hidden cursor-pointer"
-            onClick={() => listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => {
+              if (listRef.current) {
+                const rectTop = listRef.current.getBoundingClientRect().top;
+                const top = rectTop + window.scrollY - 100;
+                window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+              }
+            }}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
@@ -258,7 +268,13 @@ export default function ExpenseTracker() {
             transition={{ delay: 0.3 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(236, 72, 153, 0.3)' }}
             className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-pink-200/50 shadow-lg relative overflow-hidden cursor-pointer"
-            onClick={() => listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => {
+              if (listRef.current) {
+                const rectTop = listRef.current.getBoundingClientRect().top;
+                const top = rectTop + window.scrollY - 100;
+                window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+              }
+            }}
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">

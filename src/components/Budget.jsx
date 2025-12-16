@@ -50,7 +50,7 @@ const FloatingCoins = () => {
 };
 
 export default function Budget() {
-  useHashScroll();
+  useHashScroll(100);
   const dispatch = useDispatch();
   const budgets = useSelector(state => state.budget.budgets);
   const categories = useSelector(state => state.category.categories);
@@ -114,7 +114,9 @@ export default function Budget() {
 
   const scrollToList = () => {
     if (listRef.current) {
-      listRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const rectTop = listRef.current.getBoundingClientRect().top;
+      const top = rectTop + window.scrollY - 100;
+      window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
     }
   };
 
