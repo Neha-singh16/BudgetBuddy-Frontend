@@ -88,12 +88,12 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.05 }}
           >
             <h3 className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-emerald-300 mb-3">Navigate</h3>
-            <nav className="space-y-2">
+            <nav className="space-y-1.5 flex flex-col">
               {navLinks.map((link) => (
-                <Link key={link.to} to={link.to}>
+                <Link key={link.to} to={link.to} className="w-fit">
                   <motion.div
                     whileHover={{ x: 2 }}
-                    className="text-slate-300/80 hover:text-emerald-300 transition-colors duration-300 text-[11px] md:text-xs"
+                    className="text-slate-300/80 hover:text-emerald-300 transition-colors duration-300 text-[11px] md:text-xs block whitespace-nowrap"
                   >
                     {link.label}
                   </motion.div>
@@ -111,13 +111,13 @@ export default function Footer() {
               transition={{ duration: 0.5, delay: 0.05 + idx * 0.03 }}
             >
               <h3 className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-emerald-300 mb-3">{section.title}</h3>
-              <div className="space-y-2">
+              <div className="space-y-1.5 flex flex-col">
                 {section.links.map((link) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
                     whileHover={{ x: 2 }}
-                    className="text-slate-300/80 hover:text-emerald-300 transition-colors duration-300 text-[11px] md:text-xs"
+                    className="text-slate-300/80 hover:text-emerald-300 transition-colors duration-300 text-[11px] md:text-xs block whitespace-nowrap w-fit"
                   >
                     {link.label}
                   </motion.a>
