@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Wallet, Sparkles, Mail, Phone, MapPin, Github, Twitter, Linkedin } from "lucide-react";
+import { Wallet, Sparkles, Mail, Phone, MapPin, Github, Twitter, Linkedin , Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const links = [
@@ -11,9 +11,9 @@ const links = [
 ];
 
 const socials = [
-  { Icon: Github, href: "https://github.com/" },
-  { Icon: Twitter, href: "https://twitter.com/" },
-  { Icon: Linkedin, href: "https://www.linkedin.com/" },
+  { Icon: Github, href: "https://github.com/Neha-singh16" },
+  { Icon: Instagram, href: "https://www.instagram.com/nehaa16.__/" },
+  { Icon: Linkedin, href: "https://www.linkedin.com/in/neha-singh-2142392a1/" },
 ];
 
 const Footer = () => {
