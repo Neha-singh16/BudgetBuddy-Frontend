@@ -209,7 +209,7 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4 mb-8"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-4 mb-8"
       >
         {statCards.map((card, idx) => (
           <motion.div
@@ -339,7 +339,7 @@ export default function Dashboard() {
       {/* Recent Activity & Quick Actions */}
       <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Activity */}
-        <motion.div variants={cardVariants} className="col-span-2 bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-gray-100">
+        <motion.div variants={cardVariants} className="lg:col-span-2 bg-white/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100">
           <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
             <CreditCard className="w-5 h-5 text-purple-600" />
             Recent Activity
@@ -373,7 +373,7 @@ export default function Dashboard() {
         </motion.div>
       
         {/* Quick Actions */}
-        <motion.div variants={cardVariants} className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-6 shadow-lg text-white">
+        <motion.div variants={cardVariants} className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-4 md:p-6 shadow-lg text-white">
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
             <Plus className="w-5 h-5" />
             Quick Actions

@@ -67,6 +67,13 @@ const Sidebar = () => {
   const isMenuOpen = useSelector((store) => store.menu.isMenuOpen);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLinkClick = () => {
     // Only close on mobile

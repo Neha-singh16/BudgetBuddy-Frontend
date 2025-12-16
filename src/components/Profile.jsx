@@ -407,7 +407,7 @@ export default function Profile() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 py-4 md:py-8 px-2 sm:px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -417,22 +417,22 @@ export default function Profile() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6 md:mb-8"
         >
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2 flex items-center gap-3">
-            <User className="text-purple-600" />
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2 flex items-center gap-2 md:gap-3">
+            <User className="text-purple-600 w-6 h-6 md:w-8 md:h-8" />
             My Profile
           </h1>
-          <p className="text-gray-600">Manage your personal information</p>
+          <p className="text-sm md:text-base text-gray-600">Manage your personal information</p>
         </motion.div>
 
-        <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-purple-100/50">
-          <div className="grid grid-cols-1 md:grid-cols-3">
+        <div className="bg-white/80 backdrop-blur-xl rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden border border-purple-100/50">
+          <div className="grid grid-cols-1 lg:grid-cols-3">
             {/* Avatar Section */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-8 flex items-center justify-center"
+              className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-6 md:p-8 flex items-center justify-center"
             >
               {/* Decorative elements */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" />
@@ -504,10 +504,10 @@ export default function Profile() {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="col-span-2 p-8"
+              className="lg:col-span-2 p-4 sm:p-6 md:p-8"
             >
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-800">
+              <div className="flex justify-between items-center mb-6 md:mb-8">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800">
                   Personal Information
                 </h2>
                 {edit ? (
@@ -517,7 +517,7 @@ export default function Profile() {
                     onClick={() => setEdit(false)}
                     className="p-2 text-gray-500 hover:text-red-500 transition-colors"
                   >
-                    <X size={24} />
+                    <X size={20} className="md:w-6 md:h-6" />
                   </motion.button>
                 ) : (
                   <motion.button
@@ -526,12 +526,12 @@ export default function Profile() {
                     onClick={() => setEdit(true)}
                     className="p-2 text-purple-600 hover:text-purple-700 transition-colors"
                   >
-                    <Pencil size={24} />
+                    <Pencil size={20} className="md:w-6 md:h-6" />
                   </motion.button>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 {[
                   { lbl: "First Name", nm: "firstName", disabled: false },
                   { lbl: "Last Name",  nm: "lastName",  disabled: false },

@@ -277,7 +277,7 @@ export default function ExpenseTracker() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
           onSubmit={handleSubmit}
-          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 mb-8 shadow-2xl border-2 border-orange-200/50 relative overflow-hidden"
+          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-4 md:p-6 lg:p-8 mb-8 shadow-2xl border-2 border-orange-200/50 relative overflow-hidden"
         >
           {/* Form glow effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 via-red-500/5 to-pink-500/5" />
@@ -290,7 +290,7 @@ export default function ExpenseTracker() {
               <h3 className="text-xl font-bold text-gray-800">Add New Expense</h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-4">
               {/* Amount */}
               <div className="relative">
                 <label className="block text-sm font-bold text-gray-700 mb-2">Amount</label>

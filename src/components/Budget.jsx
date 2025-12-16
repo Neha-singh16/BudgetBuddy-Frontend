@@ -232,9 +232,9 @@ export default function Budget() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         onSubmit={handleAddBudget}
-        className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 mb-6 shadow-lg border border-emerald-100/50"
+        className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 mb-6 shadow-lg border border-emerald-100/50"
       >
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4">
           <select name="categoryId" value={newBudget.categoryId} onChange={handleBudgetChange}
             className="px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all bg-gray-50 focus:bg-white" required>
             <option value="">Select Category</option>

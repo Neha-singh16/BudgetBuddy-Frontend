@@ -274,7 +274,7 @@ export default function Navbar() {
           >
             <Wallet className="w-6 h-6 md:w-7 md:h-7" />
           </motion.div>
-          <span className="text-xl md:text-2xl font-bold select-none">
+          <span className="text-lg sm:text-xl md:text-2xl font-bold select-none">
             Budget<span className="text-emerald-200">Buddy</span>
           </span>
         </motion.div>
