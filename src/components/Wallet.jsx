@@ -178,7 +178,7 @@ export default function WalletPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
         id="income-list"
-        className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-green-100/50"
+        className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-green-100/50 scroll-mt-24"
         ref={listRef}
       >
         <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">

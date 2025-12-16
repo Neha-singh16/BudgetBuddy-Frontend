@@ -441,7 +441,7 @@ export default function ExpenseTracker() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           id="expenses-list"
-          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-orange-200/50 relative overflow-hidden"
+          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-orange-200/50 relative overflow-hidden scroll-mt-24"
           ref={listRef}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5" />

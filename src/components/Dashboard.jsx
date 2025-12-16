@@ -178,12 +178,21 @@ export default function Dashboard() {
   ];
 
   const handleStatClick = (label) => {
-    if (label === 'Total Budget' || label === 'Active Budgets' || label === 'Remaining Budget') {
-      navigate('/app/budget#budgets-list');
-    } else if (label === 'Total Spent' || label === 'Wallet Balance') {
-      navigate('/app/expense#expenses-list');
-    } else if (label === 'Remaining Income') {
-      navigate('/app/income#income-list');
+    switch (label) {
+      case 'Total Budget':
+      case 'Active Budgets':
+      case 'Remaining Budget':
+        navigate('/app/budget#budgets-list');
+        break;
+      case 'Total Spent':
+        navigate('/app/expense#expenses-list');
+        break;
+      case 'Wallet Balance':
+      case 'Remaining Income':
+        navigate('/app/income#income-list');
+        break;
+      default:
+        break;
     }
   };
 

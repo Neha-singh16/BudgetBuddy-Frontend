@@ -288,7 +288,7 @@ export default function Budget() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           id="budgets-list"
-          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-emerald-200/50 relative overflow-hidden"
+          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-emerald-200/50 relative overflow-hidden scroll-mt-24"
           ref={listRef}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5" />
