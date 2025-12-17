@@ -62,20 +62,23 @@ export default function Budget() {
   const [newBudget, setNewBudget] = useState({ categoryId: '', limit: '', period: 'monthly' });
   const [error, setError] = useState('');
   const [filterPeriod, setFilterPeriod] = useState('all');
+  const [balance, setBalance] = useState({ totalIncome: 0, totalExpenses: 0, balance: 0, status: 'neutral' });
 
   useEffect(() => {
     (async () => {
       try {
-        const [cats, buds, exps] = await Promise.all([
+        const [cats, buds, exps, bal] = await Promise.all([
           fetch(`${USER}/category`, { credentials: 'include' }).then(r => r.json()),
           fetch(`${USER}/user/budget`, { credentials: 'include' }).then(r => r.json()),
           fetch(`${USER}/user/expense`, { credentials: 'include' }).then(r => r.json()),
+          fetch(`${USER}/user/balance`, { credentials: 'include' }).then(r => r.json()).catch(() => ({ totalIncome: 0, totalExpenses: 0, balance: 0, status: 'neutral' })),
         ]);
         dispatch(setCategories(cats));
         dispatch(setBudgets(buds));
         if (Array.isArray(exps)) {
           dispatch(setExpenses(exps));
         }
+        setBalance(bal);
       } catch (e) {
         console.error(e);
       }
@@ -109,6 +112,44 @@ export default function Budget() {
     if (!window.confirm('Delete this budget?')) return;
     const res = await fetch(`${USER}/user/budget/${id}`, { method: 'DELETE', credentials: 'include' });
     if (res.ok) dispatch(deleteBudget(id));
+  };
+
+  const handleArchiveAndReset = async (budgetId) => {
+    if (!window.confirm('Archive this budget period and reset? You can view archived data in History.')) return;
+    try {
+      const res = await fetch(`${USER}/user/budget/${budgetId}/archive-and-reset`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (res.ok) {
+        alert('Budget archived and reset successfully!');
+        // Refresh budgets
+        const budsRes = await fetch(`${USER}/user/budget`, { credentials: 'include' }).then(r => r.json());
+        dispatch(setBudgets(budsRes));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleToggleResetPreference = async (budgetId, currentPref) => {
+    try {
+      const newPref = currentPref === 'manual' ? 'automatic' : 'manual';
+      const res = await fetch(`${USER}/user/budget/${budgetId}/reset-preference`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resetPreference: newPref }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        // Update in store
+        const updatedBudgets = budgets.map(b => b._id === budgetId ? updated.budget : b);
+        dispatch(setBudgets(updatedBudgets));
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   // Helper to format name
@@ -332,6 +373,46 @@ export default function Budget() {
           </motion.div>
         </div>
 
+        {/* Balance Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-8 bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-blue-200/50 shadow-lg relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-2xl" />
+          <div className="relative">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <Coins className="w-6 h-6 text-blue-500" />
+                Your Balance
+              </h3>
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <CircleDollarSign className="text-blue-500 w-6 h-6" />
+              </motion.div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Income</p>
+                <p className="text-2xl font-black text-green-600">₹{balance.totalIncome?.toLocaleString() || 0}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Expenses</p>
+                <p className="text-2xl font-black text-red-600">₹{balance.totalExpenses?.toLocaleString() || 0}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Balance</p>
+                <p className={`text-2xl font-black ${(balance.balance || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  ₹{(balance.balance || 0).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
       {/* Add Budget Form */}
       <motion.form
         initial={{ opacity: 0, scale: 0.95 }}
@@ -538,14 +619,43 @@ export default function Budget() {
                             </div>
                           </div>
 
-                          <motion.button
-                            whileHover={{ scale: 1.2, rotate: 10 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => handleDelete(b._id)}
-                            className="p-3 text-red-500 hover:bg-red-100 rounded-xl transition-all border-2 border-transparent hover:border-red-200 flex-shrink-0"
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </motion.button>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {/* Archive Button */}
+                            <motion.button
+                              whileHover={{ scale: 1.15 }}
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => handleArchiveAndReset(b._id)}
+                              className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-all border border-transparent hover:border-blue-200"
+                              title="Archive this period & reset"
+                            >
+                              <Sparkles className="w-5 h-5" />
+                            </motion.button>
+
+                            {/* Reset Preference Toggle */}
+                            <motion.button
+                              whileHover={{ scale: 1.15 }}
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => handleToggleResetPreference(b._id, b.resetPreference || 'manual')}
+                              className={`p-2 rounded-lg transition-all border ${
+                                (b.resetPreference || 'manual') === 'automatic'
+                                  ? 'bg-green-100 border-green-200 text-green-600 hover:bg-green-200'
+                                  : 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
+                              }`}
+                              title={`Reset: ${(b.resetPreference || 'manual').toUpperCase()}`}
+                            >
+                              <Clock className="w-5 h-5" />
+                            </motion.button>
+
+                            {/* Delete Button */}
+                            <motion.button
+                              whileHover={{ scale: 1.2, rotate: 10 }}
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => handleDelete(b._id)}
+                              className="p-3 text-red-500 hover:bg-red-100 rounded-xl transition-all border-2 border-transparent hover:border-red-200"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </motion.button>
+                          </div>
                         </div>
                       </motion.div>
                     );

@@ -121,6 +121,7 @@ const Sidebar = () => {
     { to: "/app/budget", icon: FaListUl, label: "Budget", color: "from-emerald-500 to-teal-500" },
     { to: "/app/expense", icon: FaPlusCircle, label: "Add Expense", color: "from-orange-500 to-red-500" },
     { to: "/app/income", icon: FaWallet, label: "Income", color: "from-green-500 to-emerald-500" },
+    { to: "/app/history", icon: () => <span>📊</span>, label: "History & Trends", color: "from-purple-500 to-pink-500" },
     { to: "/app/profile", icon: FaUserCircle, label: "Profile", color: "from-purple-500 to-pink-500" },
   ];
 

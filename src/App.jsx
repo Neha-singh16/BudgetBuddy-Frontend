@@ -13,6 +13,7 @@ import ExpenseTracker from "./components/Expense";
 import ChangePasswordPage from "./components/ChangePassword";
 import AuthPage from "./components/Login";
 import WalletPage from "./components/Wallet";
+import History from "./components/History";
 
 // Redirect away from login if already authenticated
 function RedirectIfAuthenticated({ children }) {
@@ -49,6 +50,7 @@ function App() {
             <Route path="expense" element={<ExpenseTracker />} />
             <Route path="budget" element={<Budget />} />
              <Route path="income" element={<WalletPage />} />
+            <Route path="history" element={<History />} />
 
           </Route>
         </Routes>
