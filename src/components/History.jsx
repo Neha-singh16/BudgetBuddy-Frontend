@@ -16,6 +16,44 @@ const History = () => {
     fetchHistoryData();
   }, [filterPeriod]);
 
+  const normalizeDateKey = (d) => {
+    try {
+      const dt = new Date(d);
+      // use only Y-M-D so multiple archives on same day collapse
+      return `${dt.getFullYear()}-${dt.getMonth()+1}-${dt.getDate()}`;
+    } catch {
+      return String(d);
+    }
+  };
+
+  const dedupeArchives = (list) => {
+    const seen = new Set();
+    const out = [];
+    for (const a of list || []) {
+      const key = [
+        a.categoryId || a.categoryName || 'unknown',
+        a.period || 'unknown',
+        normalizeDateKey(a.archivedAt || a.date || a._id)
+      ].join('|');
+      if (!seen.has(key)) {
+        seen.add(key);
+        out.push(a);
+      } else {
+        // If duplicate exists, prefer the one with higher percentageUsed (more informative)
+        const idx = out.findIndex(x => (
+          (x.categoryId || x.categoryName) === (a.categoryId || a.categoryName) &&
+          (x.period || 'unknown') === (a.period || 'unknown') &&
+          normalizeDateKey(x.archivedAt || x.date || x._id) === normalizeDateKey(a.archivedAt || a.date || a._id)
+        ));
+        if (idx !== -1 && (a.percentageUsed ?? 0) > (out[idx].percentageUsed ?? 0)) {
+          out[idx] = a;
+        }
+      }
+    }
+    // Sort newest first
+    return out.sort((a, b) => new Date(b.archivedAt || b.date || 0) - new Date(a.archivedAt || a.date || 0));
+  };
+
   const fetchHistoryData = async () => {
     try {
       setLoading(true);
@@ -27,7 +65,7 @@ const History = () => {
         fetch(`${USER}/user/balance`, { credentials: 'include' }).then(r => r.json()),
       ]);
 
-      setArchives(archivesRes || []);
+      setArchives(dedupeArchives(archivesRes || []));
       setPerformance(perfRes);
       setBalance(balanceRes);
     } catch (err) {
