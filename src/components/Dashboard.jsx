@@ -1,5 +1,6 @@
 // src/components/Dashboard.jsx
 import React, { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBudgets }    from '../utils/budgetSlice';
 import { setExpenses }   from '../utils/expenseSlice';
@@ -37,24 +38,29 @@ export default function Dashboard() {
   const period     = useSelector(s => s.dashboard.period);
   const navigate   = useNavigate();
 
+  const { data: dashboardData } = useQuery({
+    queryKey: ['dashboard-data', period],
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    queryFn: async () => {
+      const [buds, exps, cats, incs] = await Promise.all([
+        fetch(`${USER}/user/budget`,  { credentials: 'include' }).then(r => r.json()),
+        fetch(`${USER}/user/expense`, { credentials: 'include' }).then(r => r.json()),
+        fetch(`${USER}/category`,     { credentials: 'include' }).then(r => r.json()),
+        fetch(`${USER}/user/income`,  { credentials: 'include' }).then(r => r.json()),
+      ]);
+      return { buds, exps, cats, incs };
+    },
+  });
+
   useEffect(() => {
-    (async () => {
-      try {
-        const [buds, exps, cats, incs] = await Promise.all([
-          fetch(`${USER}/user/budget`,  { credentials: 'include' }).then(r => r.json()),
-          fetch(`${USER}/user/expense`, { credentials: 'include' }).then(r => r.json()),
-          fetch(`${USER}/category`,     { credentials: 'include' }).then(r => r.json()),
-          fetch(`${USER}/user/income`,  { credentials: 'include' }).then(r => r.json()),
-        ]);
-        dispatch(setBudgets(buds));
-        dispatch(setExpenses(exps));
-        dispatch(setCategories(cats));
-        dispatch(setIncomes(incs));
-      } catch (e) {
-        console.error('Dashboard load error:', e);
-      }
-    })();
-  }, [dispatch, period]);
+    if (!dashboardData) return;
+    const { buds, exps, cats, incs } = dashboardData;
+    dispatch(setBudgets(buds));
+    dispatch(setExpenses(exps));
+    dispatch(setCategories(cats));
+    dispatch(setIncomes(incs));
+  }, [dashboardData, dispatch]);
 
   // Metrics
   const totalIncome     = incomes.reduce((sum, i) => sum + Number(i.amount), 0);
