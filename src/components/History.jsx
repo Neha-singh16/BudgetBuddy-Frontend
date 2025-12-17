@@ -124,46 +124,44 @@ const History = () => {
           </motion.div>
         )}
 
-        {/* Balance Card */}
-        {balance && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
-          >
-            {/* Total Income */}
-            <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-green-200/50 shadow-lg">
-              <div className="flex items-center gap-3 mb-3">
-                <TrendingUp className="w-6 h-6 text-green-600" />
-                <h3 className="font-bold text-gray-800">Total Income</h3>
-              </div>
-              <p className="text-3xl font-black text-green-600">₹{balance.totalIncome.toLocaleString()}</p>
+        {/* Balance Card (safe rendering) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
+        >
+          {/* Total Income */}
+          <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-green-200/50 shadow-lg">
+            <div className="flex items-center gap-3 mb-3">
+              <TrendingUp className="w-6 h-6 text-green-600" />
+              <h3 className="font-bold text-gray-800">Total Income</h3>
             </div>
+            <p className="text-3xl font-black text-green-600">₹{(balance?.totalIncome ?? 0).toLocaleString()}</p>
+          </div>
 
-            {/* Total Expenses */}
-            <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-lg">
-              <div className="flex items-center gap-3 mb-3">
-                <TrendingDown className="w-6 h-6 text-red-600" />
-                <h3 className="font-bold text-gray-800">Total Expenses</h3>
-              </div>
-              <p className="text-3xl font-black text-red-600">₹{balance.totalExpenses.toLocaleString()}</p>
+          {/* Total Expenses */}
+          <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-lg">
+            <div className="flex items-center gap-3 mb-3">
+              <TrendingDown className="w-6 h-6 text-red-600" />
+              <h3 className="font-bold text-gray-800">Total Expenses</h3>
             </div>
+            <p className="text-3xl font-black text-red-600">₹{(balance?.totalExpenses ?? 0).toLocaleString()}</p>
+          </div>
 
-            {/* Net Balance */}
-            <div className={`bg-white/70 backdrop-blur-xl rounded-2xl p-6 border shadow-lg ${
-              balance.balance >= 0 ? 'border-blue-200/50' : 'border-orange-200/50'
-            }`}>
-              <div className="flex items-center gap-3 mb-3">
-                <Zap className={`w-6 h-6 ${balance.balance >= 0 ? 'text-blue-600' : 'text-orange-600'}`} />
-                <h3 className="font-bold text-gray-800">Net Balance</h3>
-              </div>
-              <p className={`text-3xl font-black ${balance.balance >= 0 ? 'text-blue-600' : 'text-orange-600'}`}>
-                ₹{balance.balance.toLocaleString()}
-              </p>
+          {/* Net Balance */}
+          <div className={`bg-white/70 backdrop-blur-xl rounded-2xl p-6 border shadow-lg ${
+            ((balance?.balance ?? 0) >= 0) ? 'border-blue-200/50' : 'border-orange-200/50'
+          }`}>
+            <div className="flex items-center gap-3 mb-3">
+              <Zap className={`w-6 h-6 ${((balance?.balance ?? 0) >= 0) ? 'text-blue-600' : 'text-orange-600'}`} />
+              <h3 className="font-bold text-gray-800">Net Balance</h3>
             </div>
-          </motion.div>
-        )}
+            <p className={`text-3xl font-black ${((balance?.balance ?? 0) >= 0) ? 'text-blue-600' : 'text-orange-600'}`}>
+              ₹{(balance?.balance ?? 0).toLocaleString()}
+            </p>
+          </div>
+        </motion.div>
 
         {/* History Section */}
         <motion.div
