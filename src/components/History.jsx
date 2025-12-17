@@ -114,12 +114,12 @@ const History = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
-          <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
             Your Financial Journey
           </h1>
-          <p className="text-gray-600 font-medium">Track trends, celebrate wins, and improve together 🚀</p>
+          <p className="text-sm sm:text-base text-gray-600 font-medium">Track trends, celebrate wins, and improve together 🚀</p>
         </motion.div>
 
         {/* Performance Rewards Card */}
@@ -128,34 +128,34 @@ const History = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-500 rounded-3xl p-8 mb-8 text-white shadow-2xl relative overflow-hidden"
+            className="bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-500 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 text-white shadow-2xl relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 opacity-10">
-              <Trophy className="w-40 h-40" />
+              <Trophy className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40" />
             </div>
             <div className="relative">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="text-6xl">{getRewardEmoji(performance.underBudgetCount, performance.streak)}</div>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <div className="text-4xl sm:text-5xl md:text-6xl">{getRewardEmoji(performance.underBudgetCount, performance.streak)}</div>
                 <div>
-                  <h2 className="text-3xl font-bold mb-2">{getPerformanceMessage()}</h2>
-                  <p className="text-purple-100">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">{getPerformanceMessage()}</h2>
+                  <p className="text-purple-100 text-sm sm:text-base">
                     {performance.streak > 0 ? `${performance.streak}-period streak! 🎯` : 'Ready to build a streak!'}
                   </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="bg-white/20 rounded-xl p-4 backdrop-blur">
-                  <p className="text-sm opacity-80 mb-1">Under Budget</p>
-                  <p className="text-3xl font-bold">{performance.underBudgetCount}</p>
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 text-center">
+                <div className="bg-white/20 rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 backdrop-blur">
+                  <p className="text-xs sm:text-sm opacity-80 mb-1">Under Budget</p>
+                  <p className="text-xl sm:text-2xl md:text-3xl font-bold">{performance.underBudgetCount}</p>
                 </div>
-                <div className="bg-white/20 rounded-xl p-4 backdrop-blur">
-                  <p className="text-sm opacity-80 mb-1">At Limit</p>
-                  <p className="text-3xl font-bold">{performance.atLimitCount}</p>
+                <div className="bg-white/20 rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 backdrop-blur">
+                  <p className="text-xs sm:text-sm opacity-80 mb-1">At Limit</p>
+                  <p className="text-xl sm:text-2xl md:text-3xl font-bold">{performance.atLimitCount}</p>
                 </div>
-                <div className="bg-white/20 rounded-xl p-4 backdrop-blur">
-                  <p className="text-sm opacity-80 mb-1">Over Budget</p>
-                  <p className="text-3xl font-bold">{performance.overBudgetCount}</p>
+                <div className="bg-white/20 rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 backdrop-blur">
+                  <p className="text-xs sm:text-sm opacity-80 mb-1">Over Budget</p>
+                  <p className="text-xl sm:text-2xl md:text-3xl font-bold">{performance.overBudgetCount}</p>
                 </div>
               </div>
             </div>

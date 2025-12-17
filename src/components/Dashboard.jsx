@@ -287,9 +287,9 @@ export default function Dashboard() {
         className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"
       >
         {/* Expense Breakdown */}
-        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-emerald-100/50">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <PiggyBank className="w-5 h-5 text-emerald-600" />
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 shadow-lg border border-emerald-100/50">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
+            <PiggyBank className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
             Expense Breakdown
           </h2>
           {breakdownData.length ? (
@@ -301,8 +301,12 @@ export default function Dashboard() {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={90}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={window.innerWidth < 640 ? 70 : 90}
+                  label={({ name, percent }) => {
+                    const shortName = name.length > 8 ? name.substring(0, 6) + '..' : name;
+                    return `${shortName} ${(percent * 100).toFixed(0)}%`;
+                  }}
+                  labelLine={false}
                 >
                   {breakdownData.map((_, idx) => (
                     <Cell key={idx} fill={colors.emerald[idx % colors.emerald.length]} />
@@ -319,9 +323,9 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Spending Trend */}
-        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-teal-100/50">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-teal-600" />
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 shadow-lg border border-teal-100/50">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
             Spending Trend
           </h2>
           {trendData.length ? (
