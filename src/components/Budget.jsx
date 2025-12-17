@@ -378,36 +378,42 @@ export default function Budget() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mb-8 bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-blue-200/50 shadow-lg relative overflow-hidden"
+          className="mb-8 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-200/50 shadow-lg relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-2xl" />
+          <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-2xl" />
           <div className="relative">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <Coins className="w-6 h-6 text-blue-500" />
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <h3 className="text-base sm:text-lg font-bold text-gray-800 flex items-center gap-2">
+                <Coins className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
                 Your Balance
               </h3>
               <motion.div
                 animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <CircleDollarSign className="text-blue-500 w-6 h-6" />
+                <CircleDollarSign className="text-blue-500 w-5 h-5 sm:w-6 sm:h-6" />
               </motion.div>
             </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Income</p>
-                <p className="text-2xl font-black text-green-600">₹{balance.totalIncome?.toLocaleString() || 0}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-start">
+              <div className="flex sm:block justify-between sm:justify-start items-baseline gap-2">
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Income</p>
+                  <p className="text-xl sm:text-2xl font-black text-green-600 break-words">₹{balance.totalIncome?.toLocaleString() || 0}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Expenses</p>
-                <p className="text-2xl font-black text-red-600">₹{balance.totalExpenses?.toLocaleString() || 0}</p>
+              <div className="flex sm:block justify-between sm:justify-start items-baseline gap-2">
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Expenses</p>
+                  <p className="text-xl sm:text-2xl font-black text-red-600 break-words">₹{balance.totalExpenses?.toLocaleString() || 0}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Balance</p>
-                <p className={`text-2xl font-black ${(balance.balance || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  ₹{(balance.balance || 0).toLocaleString()}
-                </p>
+              <div className="flex sm:block justify-between sm:justify-start items-baseline gap-2">
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Balance</p>
+                  <p className={`text-xl sm:text-2xl font-black ${(balance.balance || 0) >= 0 ? 'text-green-600' : 'text-red-600'} break-words`}>
+                    ₹{(balance.balance || 0).toLocaleString()}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

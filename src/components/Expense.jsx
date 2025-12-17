@@ -8,7 +8,7 @@ import { setCategories } from "../utils/categorySlice";
 import { setBudgets } from "../utils/budgetSlice";
 import { USER } from "../utils/constant";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, CreditCard, Calendar, FileText, TrendingDown, AlertCircle, Receipt, Sparkles, Banknote, ArrowDownCircle, ShoppingBag } from "lucide-react";
+import { Plus, Trash2, CreditCard, Calendar, FileText, TrendingDown, AlertCircle, Receipt, Sparkles, Banknote, ArrowDownCircle, ShoppingBag, DollarSign } from "lucide-react";
 
 const FloatingReceipts = () => {
   const receipts = Array.from({ length: 12 }, (_, i) => ({
