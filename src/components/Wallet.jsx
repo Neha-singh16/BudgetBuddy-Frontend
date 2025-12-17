@@ -201,26 +201,26 @@ export default function WalletPage() {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ delay: idx * 0.05 }}
                 whileHover={{ x: 5, backgroundColor: 'rgba(22, 163, 74, 0.05)' }}
-                className="flex justify-between items-center p-4 rounded-xl border border-gray-100 hover:border-green-200 transition-all"
+                className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-green-200 transition-all"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white">
-                    <Briefcase className="w-6 h-6" />
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white flex-shrink-0">
+                    <Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">{i.source}</p>
-                    <p className="text-sm text-gray-500">Monthly income</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-gray-800 text-sm sm:text-base truncate">{i.source}</p>
+                    <p className="text-xs sm:text-sm text-gray-500">Monthly income</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-green-600">₹{i.amount.toLocaleString()}</p>
+                <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 flex-shrink-0">
+                  <div className="text-left sm:text-right">
+                    <p className="text-xl sm:text-2xl font-bold text-green-600 break-words">₹{i.amount.toLocaleString()}</p>
                   </div>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleDelete(i._id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
                   >
                     <Trash2 className="w-5 h-5" />
                   </motion.button>
