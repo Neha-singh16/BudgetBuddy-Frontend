@@ -6,6 +6,7 @@ import useHashScroll from '../utils/useHashScroll';
 import { useSelector, useDispatch } from 'react-redux';
 import { setBudgets, addBudget, deleteBudget } from '../utils/budgetSlice';
 import { setCategories } from '../utils/categorySlice';
+import { setExpenses } from '../utils/expenseSlice';
 import { USER } from '../utils/constant';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -72,8 +73,7 @@ export default function Budget() {
         ]);
         dispatch(setCategories(cats));
         dispatch(setBudgets(buds));
-        if (exps && Array.isArray(exps)) {
-          const { setExpenses } = require('../utils/expenseSlice');
+        if (Array.isArray(exps)) {
           dispatch(setExpenses(exps));
         }
       } catch (e) {
@@ -122,22 +122,34 @@ export default function Budget() {
 
   // Calculate next reset date
   const getNextResetDate = (period) => {
-    const today = new Date();
-    let resetDate = new Date(today);
+    try {
+      if (!period) return 'N/A';
 
-    if (period === 'weekly') {
-      const daysUntilMonday = (1 - today.getDay() + 7) % 7 || 7;
-      resetDate.setDate(today.getDate() + daysUntilMonday);
-    } else if (period === 'monthly') {
-      resetDate.setMonth(today.getMonth() + 1);
-      resetDate.setDate(1);
-    } else if (period === 'yearly') {
-      resetDate.setFullYear(today.getFullYear() + 1);
-      resetDate.setMonth(0);
-      resetDate.setDate(1);
+      const today = new Date();
+      let resetDate = new Date(today);
+
+      if (period === 'weekly') {
+        const daysUntilMonday = (1 - today.getDay() + 7) % 7 || 7; // 1 = Monday
+        resetDate.setDate(today.getDate() + daysUntilMonday);
+      } else if (period === 'monthly') {
+        resetDate.setMonth(today.getMonth() + 1);
+        resetDate.setDate(1);
+      } else if (period === 'yearly') {
+        resetDate.setFullYear(today.getFullYear() + 1);
+        resetDate.setMonth(0);
+        resetDate.setDate(1);
+      } else {
+        return 'N/A';
+      }
+
+      // Use valid options for toLocaleDateString
+      return resetDate.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+      });
+    } catch {
+      return 'N/A';
     }
-
-    return resetDate.toLocaleDateString('en-IN', { day: 'short', month: 'short' });
   };
 
   // Get budget health percentage
