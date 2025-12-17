@@ -66,6 +66,8 @@ export default function ExpenseTracker() {
     note: "",
   });
   const [error, setError] = useState("");
+  const [overrideBudget, setOverrideBudget] = useState(false);
+  const [budgetWarning, setBudgetWarning] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -91,7 +93,12 @@ export default function ExpenseTracker() {
   }, [dispatch]);
 
   const handleChange = (e) => {
-    setFormData((fd) => ({ ...fd, [e.target.name]: e.target.value }));
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setOverrideBudget(checked);
+    } else {
+      setFormData((fd) => ({ ...fd, [name]: value }));
+    }
     setError("");
   };
 
@@ -104,11 +111,44 @@ export default function ExpenseTracker() {
     const b = budgets.find((b) => b._id === formData.budget);
     if (!b) return true;
     const remaining = b.limit - getSpent(b._id);
-    if (Number(formData.amount) > remaining) {
-      setError(`Amount exceeds remaining ₹${remaining}`);
-      return false;
+    const amount = Number(formData.amount);
+    
+    if (amount > remaining) {
+      if (amount > remaining + 1000) {
+        // Large overage, always warn
+        setBudgetWarning({
+          type: 'error',
+          message: `Budget exceeded by ₹${(amount - remaining).toLocaleString()}. Only ₹${remaining.toLocaleString()} remaining.`,
+          remaining
+        });
+        return false;
+      } else if (remaining <= 0) {
+        // Budget fully spent
+        setBudgetWarning({
+          type: 'warning',
+          message: `Budget is fully spent! Adding ₹${amount.toLocaleString()} will exceed limit.`,
+          remaining: 0
+        });
+        return !overrideBudget; // Allow if override is checked
+      } else {
+        // Minor overage
+        setBudgetWarning({
+          type: 'warning',
+          message: `Amount exceeds remaining ₹${remaining.toLocaleString()}.`,
+          remaining
+        });
+        return !overrideBudget;
+      }
     }
+    setBudgetWarning(null);
     return true;
+  };
+
+  const handleBudgetChange = (e) => {
+    setFormData((fd) => ({ ...fd, [e.target.name]: e.target.value }));
+    setError("");
+    setBudgetWarning(null);
+    setOverrideBudget(false);
   };
 
   const handleSubmit = async (e) => {
@@ -132,6 +172,8 @@ export default function ExpenseTracker() {
         budget: "",
         note: "",
       });
+      setOverrideBudget(false);
+      setBudgetWarning(null);
     } else {
       const errObj = await res
         .json()
@@ -316,92 +358,104 @@ export default function ExpenseTracker() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-4">
               {/* Amount */}
-              <div className="relative">
+              <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Amount</label>
-                <motion.input
-                  whileFocus={{ scale: 1.02 }}
-                  type="number"
-                  name="amount"
-                  value={formData.amount}
-                  onChange={handleChange}
-                  required
-                  placeholder="₹ Amount"
-                  className="w-full px-4 py-4 rounded-xl border-2 border-orange-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 outline-none transition-all bg-white hover:border-orange-300 font-medium text-gray-700"
-                />
-                <CreditCard className="absolute right-3 bottom-4 text-orange-400 w-5 h-5 pointer-events-none" />
+                <div className="relative">
+                  <motion.input
+                    whileFocus={{ scale: 1.02 }}
+                    type="number"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleChange}
+                    required
+                    placeholder="₹ Amount"
+                    className="w-full pl-4 pr-10 py-4 rounded-xl border-2 border-orange-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 outline-none transition-all bg-white hover:border-orange-300 font-medium text-gray-700"
+                  />
+                  <CreditCard className="absolute right-3 top-1/2 -translate-y-1/2 text-orange-400 w-5 h-5 pointer-events-none" />
+                </div>
               </div>
 
               {/* Date */}
-              <div className="relative">
+              <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Date</label>
-                <motion.input
-                  whileFocus={{ scale: 1.02 }}
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-4 rounded-xl border-2 border-red-200 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 outline-none transition-all bg-white hover:border-red-300 font-medium text-gray-700"
-                />
-                <Calendar className="absolute right-3 bottom-4 text-red-400 w-5 h-5 pointer-events-none" />
+                <div className="relative">
+                  <motion.input
+                    whileFocus={{ scale: 1.02 }}
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    required
+                    className="w-full pl-4 pr-10 py-4 rounded-xl border-2 border-red-200 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 outline-none transition-all bg-white hover:border-red-300 font-medium text-gray-700"
+                  />
+                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 text-red-400 w-5 h-5 pointer-events-none" />
+                </div>
               </div>
 
               {/* Category */}
-              <div className="relative">
+              <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
-                <motion.select
-                  whileFocus={{ scale: 1.02 }}
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-4 rounded-xl border-2 border-pink-200 focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 outline-none transition-all bg-white hover:border-pink-300 font-medium text-gray-700"
-                >
-                  <option value="" disabled>Select Category</option>
-                  {categories.map((c) => (
-                    <option key={c._id} value={c._id}>{c.name}</option>
-                  ))}
-                </motion.select>
+                <div className="relative">
+                  <motion.select
+                    whileFocus={{ scale: 1.02 }}
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    required
+                    className="w-full pl-4 pr-10 py-4 rounded-xl border-2 border-pink-200 focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 outline-none transition-all bg-white hover:border-pink-300 font-medium text-gray-700 appearance-none"
+                  >
+                    <option value="" disabled>Select Category</option>
+                    {categories.map((c) => (
+                      <option key={c._id} value={c._id}>{c.name}</option>
+                    ))}
+                  </motion.select>
+                  <ShoppingBag className="absolute right-3 top-1/2 -translate-y-1/2 text-pink-400 w-5 h-5 pointer-events-none" />
+                </div>
               </div>
 
               {/* Budget */}
-              <div className="relative">
+              <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Budget</label>
-                <motion.select
-                  whileFocus={{ scale: 1.02 }}
-                  name="budget"
-                  value={formData.budget}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-4 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 outline-none transition-all bg-white hover:border-rose-300 font-medium text-gray-700"
-                >
-                  <option value="" disabled>Select Budget</option>
-                  {budgets.map((b) => {
-                    const spent = getSpent(b._id);
-                    const rem = b.limit - spent;
-                    const name = categories.find((c) => c._id === b.categoryId)?.name || "Unnamed";
-                    return (
-                      <option key={b._id} value={b._id}>
-                        {name} — Rem: ₹{rem}
-                      </option>
-                    );
-                  })}
-                </motion.select>
+                <div className="relative">
+                  <motion.select
+                    whileFocus={{ scale: 1.02 }}
+                    name="budget"
+                    value={formData.budget}
+                    onChange={handleChange}
+                    required
+                    className="w-full pl-4 pr-10 py-4 rounded-xl border-2 border-rose-200 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 outline-none transition-all bg-white hover:border-rose-300 font-medium text-gray-700 appearance-none"
+                  >
+                    <option value="" disabled>Select Budget</option>
+                    {budgets.map((b) => {
+                      const spent = getSpent(b._id);
+                      const rem = b.limit - spent;
+                      const name = categories.find((c) => c._id === b.categoryId)?.name || "Unnamed";
+                      return (
+                        <option key={b._id} value={b._id}>
+                          {name} — Rem: ₹{rem}
+                        </option>
+                      );
+                    })}
+                  </motion.select>
+                  <Banknote className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-400 w-5 h-5 pointer-events-none" />
+                </div>
               </div>
 
               {/* Note */}
-              <div className="relative">
+              <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Note</label>
-                <motion.input
-                  whileFocus={{ scale: 1.02 }}
-                  type="text"
-                  name="note"
-                  value={formData.note}
-                  onChange={handleChange}
-                  placeholder="Optional note"
-                  className="w-full px-4 py-4 rounded-xl border-2 border-amber-200 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 outline-none transition-all bg-white hover:border-amber-300 font-medium text-gray-700"
-                />
-                <FileText className="absolute right-3 bottom-4 text-amber-400 w-5 h-5 pointer-events-none" />
+                <div className="relative">
+                  <motion.input
+                    whileFocus={{ scale: 1.02 }}
+                    type="text"
+                    name="note"
+                    value={formData.note}
+                    onChange={handleChange}
+                    placeholder="Optional note"
+                    className="w-full pl-4 pr-10 py-4 rounded-xl border-2 border-amber-200 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 outline-none transition-all bg-white hover:border-amber-300 font-medium text-gray-700"
+                  />
+                  <FileText className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-400 w-5 h-5 pointer-events-none" />
+                </div>
               </div>
 
               <motion.button
@@ -419,6 +473,46 @@ export default function ExpenseTracker() {
                 <span className="relative z-10">Add Expense</span>
               </motion.button>
             </div>
+
+            {/* Budget Warning Section */}
+            <AnimatePresence>
+              {budgetWarning && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className={`mt-6 p-4 rounded-xl border-2 flex items-start gap-3 ${
+                    budgetWarning.type === 'error'
+                      ? 'bg-red-50 border-red-300'
+                      : 'bg-orange-50 border-orange-300'
+                  }`}
+                >
+                  <AlertCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                    budgetWarning.type === 'error' ? 'text-red-600' : 'text-orange-600'
+                  }`} />
+                  <div className="flex-1">
+                    <p className={`font-bold mb-2 ${
+                      budgetWarning.type === 'error' ? 'text-red-700' : 'text-orange-700'
+                    }`}>
+                      {budgetWarning.message}
+                    </p>
+                    {budgetWarning.type === 'warning' && budgetWarning.remaining <= 0 && (
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={overrideBudget}
+                          onChange={handleChange}
+                          className="w-4 h-4 text-orange-600 rounded"
+                        />
+                        <span className="text-sm text-orange-700 font-medium">
+                          I understand and want to proceed anyway
+                        </span>
+                      </label>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {budgets.length === 0 && (
               <motion.div

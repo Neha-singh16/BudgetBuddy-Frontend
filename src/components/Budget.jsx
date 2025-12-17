@@ -9,7 +9,7 @@ import { setCategories } from '../utils/categorySlice';
 import { USER } from '../utils/constant';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PiggyBank, Plus, Trash2, TrendingUp, Calendar, DollarSign, Coins, Target, Sparkles, Wallet, CircleDollarSign } from 'lucide-react';
+import { PiggyBank, Plus, Trash2, TrendingUp, Calendar, DollarSign, Coins, Target, Sparkles, Wallet, CircleDollarSign, AlertCircle, CheckCircle, Clock, TrendingDown } from 'lucide-react';
 
 const FloatingCoins = () => {
   const coins = Array.from({ length: 15 }, (_, i) => ({
@@ -54,23 +54,28 @@ export default function Budget() {
   const dispatch = useDispatch();
   const budgets = useSelector(state => state.budget.budgets);
   const categories = useSelector(state => state.category.categories);
+  const expenses = useSelector(state => state.expense.expenses || []);
   const listRef = useRef(null);
 
   const [formData, setFormData] = useState({ amount: '', date: new Date().toISOString().substr(0, 10), category: '', budget: '', note: '' });
   const [newBudget, setNewBudget] = useState({ categoryId: '', limit: '', period: 'monthly' });
   const [error, setError] = useState('');
-  const [filterPeriod, setFilterPeriod] = useState('all'); // all | monthly | weekly | yearly
+  const [filterPeriod, setFilterPeriod] = useState('all');
 
-  // Fetch categories & budgets
   useEffect(() => {
     (async () => {
       try {
-        const [cats, buds] = await Promise.all([
+        const [cats, buds, exps] = await Promise.all([
           fetch(`${USER}/category`, { credentials: 'include' }).then(r => r.json()),
           fetch(`${USER}/user/budget`, { credentials: 'include' }).then(r => r.json()),
+          fetch(`${USER}/user/expense`, { credentials: 'include' }).then(r => r.json()),
         ]);
         dispatch(setCategories(cats));
         dispatch(setBudgets(buds));
+        if (exps && Array.isArray(exps)) {
+          const { setExpenses } = require('../utils/expenseSlice');
+          dispatch(setExpenses(exps));
+        }
       } catch (e) {
         console.error(e);
       }
@@ -109,7 +114,49 @@ export default function Budget() {
   // Helper to format name
   const getCatName = id => categories.find(c => c._id === id)?.name || 'Unknown';
 
+  // Calculate spent for a budget
+  const getSpent = (budgetId) =>
+    expenses
+      .filter((e) => e.budget === budgetId)
+      .reduce((sum, e) => sum + Number(e.amount), 0);
+
+  // Calculate next reset date
+  const getNextResetDate = (period) => {
+    const today = new Date();
+    let resetDate = new Date(today);
+
+    if (period === 'weekly') {
+      const daysUntilMonday = (1 - today.getDay() + 7) % 7 || 7;
+      resetDate.setDate(today.getDate() + daysUntilMonday);
+    } else if (period === 'monthly') {
+      resetDate.setMonth(today.getMonth() + 1);
+      resetDate.setDate(1);
+    } else if (period === 'yearly') {
+      resetDate.setFullYear(today.getFullYear() + 1);
+      resetDate.setMonth(0);
+      resetDate.setDate(1);
+    }
+
+    return resetDate.toLocaleDateString('en-IN', { day: 'short', month: 'short' });
+  };
+
+  // Get budget health percentage
+  const getBudgetHealth = (budgetId, limit) => {
+    const spent = getSpent(budgetId);
+    return Math.min((spent / limit) * 100, 100);
+  };
+
+  // Get budget status
+  const getBudgetStatus = (budgetId, limit) => {
+    const spent = getSpent(budgetId);
+    if (spent >= limit) return { status: 'fully-spent', label: '⚠️ Fully Spent', color: 'bg-red-100 border-red-200 text-red-600' };
+    if (spent >= limit * 0.8) return { status: 'warning', label: '⚠️ 80% Used', color: 'bg-orange-100 border-orange-200 text-orange-600' };
+    return { status: 'active', label: '✓ Active', color: 'bg-green-100 border-green-200 text-green-600' };
+  };
+
   const totalBudget = budgets.reduce((sum, b) => sum + Number(b.limit), 0);
+  const totalSpent = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+  const budgetHealthPercent = totalBudget ? Math.round((totalSpent / totalBudget) * 100) : 0;
   const activeBudgets = budgets.length;
 
   const scrollToList = () => {
@@ -167,7 +214,7 @@ export default function Budget() {
         </motion.div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -191,6 +238,31 @@ export default function Budget() {
               </div>
               <p className="text-gray-600 text-sm font-medium mb-1">Total Budget</p>
               <p className="text-3xl font-black text-emerald-600">₹{totalBudget.toLocaleString()}</p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(239, 68, 68, 0.3)' }}
+            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/20 to-transparent rounded-full blur-2xl" />
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center">
+                  <TrendingUp className="text-white w-6 h-6" />
+                </div>
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <AlertCircle className="text-red-500 w-5 h-5" />
+                </motion.div>
+              </div>
+              <p className="text-gray-600 text-sm font-medium mb-1">Total Spent</p>
+              <p className="text-3xl font-black text-red-600">₹{totalSpent.toLocaleString()}</p>
             </div>
           </motion.div>
 
@@ -224,25 +296,26 @@ export default function Budget() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(6, 182, 212, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-cyan-200/50 shadow-lg relative overflow-hidden cursor-pointer"
-            onClick={() => { setFilterPeriod('yearly'); scrollToList(); }}
+            whileHover={{ y: -5, boxShadow: budgetHealthPercent >= 100 ? '0 20px 40px rgba(239, 68, 68, 0.3)' : '0 20px 40px rgba(6, 182, 212, 0.3)' }}
+            className={`bg-white/70 backdrop-blur-xl rounded-2xl p-6 border shadow-lg relative overflow-hidden cursor-pointer transition-all ${
+              budgetHealthPercent >= 100 ? 'border-red-200/50' : 'border-cyan-200/50'
+            }`}
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-2xl" />
+            <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${budgetHealthPercent >= 100 ? 'from-red-500/20' : 'from-cyan-500/20'} to-transparent rounded-full blur-2xl`} />
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-                  <TrendingUp className="text-white w-6 h-6" />
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${budgetHealthPercent >= 100 ? 'from-red-500 to-pink-500' : 'from-cyan-500 to-blue-500'} flex items-center justify-center`}>
+                  <TrendingDown className="text-white w-6 h-6" />
                 </div>
                 <motion.div
-                  animate={{ y: [0, -5, 0] }}
+                  animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <DollarSign className="text-cyan-500 w-5 h-5" />
+                  {budgetHealthPercent >= 100 ? <AlertCircle className="text-red-500 w-5 h-5" /> : <CheckCircle className="text-cyan-500 w-5 h-5" />}
                 </motion.div>
               </div>
-              <p className="text-gray-600 text-sm font-medium mb-1">Average Budget</p>
-              <p className="text-3xl font-black text-cyan-600">₹{activeBudgets ? Math.round(totalBudget / activeBudgets).toLocaleString() : 0}</p>
+              <p className="text-gray-600 text-sm font-medium mb-1">Budget Health</p>
+              <p className={`text-3xl font-black ${budgetHealthPercent >= 100 ? 'text-red-600' : 'text-cyan-600'}`}>{budgetHealthPercent}%</p>
             </div>
           </motion.div>
         </div>
@@ -361,6 +434,12 @@ export default function Budget() {
                 ) : (
                   visibleBudgets.map((b, idx) => {
                     const catName = getCatName(b.categoryId);
+                    const spent = getSpent(b._id);
+                    const health = getBudgetHealth(b._id, b.limit);
+                    const budgetStatus = getBudgetStatus(b._id, b.limit);
+                    const nextReset = getNextResetDate(b.period);
+                    const remaining = b.limit - spent;
+                    
                     const colors = [
                       { from: 'from-emerald-500', to: 'to-teal-500', bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600' },
                       { from: 'from-teal-500', to: 'to-cyan-500', bg: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-600' },
@@ -381,72 +460,80 @@ export default function Budget() {
                           boxShadow: '0 15px 40px rgba(16, 185, 129, 0.15)',
                           x: 10
                         }}
-                        className={`p-6 rounded-2xl border-2 ${colorScheme.border} ${colorScheme.bg} transition-all relative overflow-hidden group`}
+                        className={`p-6 rounded-2xl border-2 ${budgetStatus.status === 'fully-spent' ? 'border-red-300 bg-red-50' : colorScheme.border + ' ' + colorScheme.bg} transition-all relative overflow-hidden group`}
                       >
                         {/* Animated background gradient */}
                         <motion.div
-                          className={`absolute inset-0 bg-gradient-to-r ${colorScheme.from} ${colorScheme.to} opacity-0 group-hover:opacity-10 transition-opacity`}
+                          className={`absolute inset-0 ${budgetStatus.status === 'fully-spent' ? 'bg-gradient-to-r from-red-500 to-pink-500' : `bg-gradient-to-r ${colorScheme.from} ${colorScheme.to}`} opacity-0 group-hover:opacity-10 transition-opacity`}
                         />
 
-                        <div className="relative flex justify-between items-center">
-                          <div className="flex items-center gap-4 flex-1">
+                        <div className="relative flex justify-between items-start">
+                          <div className="flex items-start gap-4 flex-1">
                             <motion.div
                               whileHover={{ rotate: 360, scale: 1.1 }}
                               transition={{ duration: 0.6 }}
-                              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorScheme.from} ${colorScheme.to} flex items-center justify-center text-white font-bold text-2xl shadow-lg`}
+                              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${budgetStatus.status === 'fully-spent' ? 'from-red-500 to-pink-500' : colorScheme.from + ' ' + colorScheme.to} flex items-center justify-center text-white font-bold text-2xl shadow-lg flex-shrink-0`}
                             >
                               {catName.charAt(0)}
                             </motion.div>
                             
                             <div className="flex-1">
-                              <p className="font-bold text-gray-800 text-lg mb-1">{catName}</p>
-                              <div className="flex items-center gap-3 text-sm text-gray-600">
+                              <div className="flex items-center gap-2 mb-1">
+                                <p className="font-bold text-gray-800 text-lg">{catName}</p>
+                                <div className={`px-2.5 py-0.5 rounded-full border text-xs font-semibold ${budgetStatus.color}`}>
+                                  {budgetStatus.label}
+                                </div>
+                              </div>
+                              
+                              <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-3">
                                 <div className="flex items-center gap-1">
                                   <Calendar className="w-4 h-4" />
                                   <span className="font-medium">{b.period.charAt(0).toUpperCase() + b.period.slice(1)}</span>
                                 </div>
-                                <div className={`px-3 py-1 rounded-full ${colorScheme.bg} border ${colorScheme.border} font-semibold ${colorScheme.text} text-xs`}>
-                                  Active
+                                <div className="flex items-center gap-1">
+                                  <Clock className="w-4 h-4" />
+                                  <span className="text-xs text-gray-500">Reset: {nextReset}</span>
                                 </div>
                               </div>
 
-                              {/* Progress bar */}
-                              <div className="mt-3">
+                              {/* Progress bar with spent indicator */}
+                              <div className="space-y-2">
                                 <div className="flex justify-between text-xs text-gray-600 mb-1">
-                                  <span className="font-medium">Budget Limit</span>
-                                  <span className="font-bold">₹{b.limit.toLocaleString()}</span>
+                                  <span className="font-medium">Spent: ₹{spent.toLocaleString()}</span>
+                                  <span className="font-bold">{Math.round(health)}%</span>
                                 </div>
-                                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
                                   <motion.div
                                     initial={{ width: 0 }}
-                                    animate={{ width: '100%' }}
+                                    animate={{ width: `${health}%` }}
                                     transition={{ duration: 1, delay: idx * 0.1 }}
-                                    className={`h-full bg-gradient-to-r ${colorScheme.from} ${colorScheme.to} rounded-full`}
+                                    className={`h-full rounded-full transition-all ${
+                                      budgetStatus.status === 'fully-spent' 
+                                        ? 'bg-gradient-to-r from-red-500 to-pink-500' 
+                                        : budgetStatus.status === 'warning'
+                                        ? 'bg-gradient-to-r from-orange-500 to-amber-500'
+                                        : `bg-gradient-to-r ${colorScheme.from} ${colorScheme.to}`
+                                    }`}
                                   />
+                                </div>
+                                <div className="flex justify-between text-xs text-gray-500">
+                                  <span>Limit: ₹{b.limit.toLocaleString()}</span>
+                                  <span className={remaining < 0 ? 'text-red-600 font-semibold' : remaining < b.limit * 0.2 ? 'text-orange-600 font-semibold' : 'text-green-600'}>
+                                    Remaining: ₹{remaining.toLocaleString()}
+                                  </span>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4">
-                            <div className="text-right">
-                              <p className="text-xs text-gray-500 font-medium mb-1">Total Limit</p>
-                              <motion.p 
-                                whileHover={{ scale: 1.05 }}
-                                className={`text-2xl font-black ${colorScheme.text}`}
-                              >
-                                ₹{b.limit.toLocaleString()}
-                              </motion.p>
-                            </div>
-                            <motion.button
-                              whileHover={{ scale: 1.2, rotate: 10 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() => handleDelete(b._id)}
-                              className="p-3 text-red-500 hover:bg-red-100 rounded-xl transition-all border-2 border-transparent hover:border-red-200"
-                            >
-                              <Trash2 className="w-5 h-5" />
-                            </motion.button>
-                          </div>
+                          <motion.button
+                            whileHover={{ scale: 1.2, rotate: 10 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => handleDelete(b._id)}
+                            className="p-3 text-red-500 hover:bg-red-100 rounded-xl transition-all border-2 border-transparent hover:border-red-200 flex-shrink-0"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </motion.button>
                         </div>
                       </motion.div>
                     );
