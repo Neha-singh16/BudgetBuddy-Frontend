@@ -551,18 +551,18 @@ export default function ExpenseTracker() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           id="expenses-list"
-          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-orange-200/50 relative overflow-hidden scroll-mt-24"
+          className="bg-white/80 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl border-2 border-orange-200/50 relative overflow-hidden scroll-mt-24"
           ref={listRef}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5" />
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5" />
           
           <div className="relative">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-                  <TrendingDown className="text-white w-5 h-5" />
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center flex-shrink-0">
+                  <DollarSign className="text-white w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">Recent Expenses</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Recent Expenses</h2>
               </div>
               <motion.div
                 animate={{ rotate: 360 }}
@@ -572,7 +572,7 @@ export default function ExpenseTracker() {
               </motion.div>
             </div>
 
-            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="space-y-2 sm:space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
               <AnimatePresence>
                 {expenses.length === 0 ? (
                   <motion.div
@@ -615,15 +615,15 @@ export default function ExpenseTracker() {
                           boxShadow: '0 15px 40px rgba(249, 115, 22, 0.15)',
                           x: 10
                         }}
-                        className={`p-6 rounded-2xl border-2 ${colorScheme.border} ${colorScheme.bg} transition-all relative overflow-hidden group`}
+                        className={`p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl border-2 ${colorScheme.border} ${colorScheme.bg} transition-all relative overflow-hidden group`}
                       >
                         {/* Animated background gradient */}
                         <motion.div
                           className={`absolute inset-0 bg-gradient-to-r ${colorScheme.from} ${colorScheme.to} opacity-0 group-hover:opacity-10 transition-opacity`}
                         />
 
-                        <div className="relative flex justify-between items-center">
-                          <div className="flex items-center gap-4 flex-1">
+                        <div className="relative flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4">
+                          <div className="flex items-center gap-4 flex-1 min-w-0">
                             <motion.div
                               whileHover={{ rotate: 360, scale: 1.1 }}
                               transition={{ duration: 0.6 }}
@@ -632,7 +632,7 @@ export default function ExpenseTracker() {
                               {catName.charAt(0)}
                             </motion.div>
                             
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-0">
                               <p className="font-bold text-gray-800 text-lg mb-1">{catName}</p>
                               <div className="flex items-center gap-3 text-sm text-gray-600 mb-2">
                                 <div className="flex items-center gap-1">
@@ -646,14 +646,14 @@ export default function ExpenseTracker() {
                                   </div>
                                 )}
                               </div>
-                              <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full ${colorScheme.bg} border ${colorScheme.border} font-semibold ${colorScheme.text} text-xs`}>
+                              <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full ${colorScheme.bg} border ${colorScheme.border} font-semibold ${colorScheme.text} text-xs w-fit`}> 
                                 <span>Budget: {budName}</span>
                               </div>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4">
-                            <div className="text-right">
+                          <div className="flex items-center gap-4 md:self-end">
+                            <div className="text-right whitespace-nowrap">
                               <p className="text-xs text-gray-500 font-medium mb-1">Amount Spent</p>
                               <motion.p 
                                 whileHover={{ scale: 1.05 }}

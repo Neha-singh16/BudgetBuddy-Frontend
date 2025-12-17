@@ -456,18 +456,18 @@ export default function Budget() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           id="budgets-list"
-          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-emerald-200/50 relative overflow-hidden scroll-mt-24"
+          className="bg-white/80 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl border-2 border-emerald-200/50 relative overflow-hidden scroll-mt-24"
           ref={listRef}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5" />
           
           <div className="relative">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                  <DollarSign className="text-white w-5 h-5" />
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
+                  <DollarSign className="text-white w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">Your Budgets</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Your Budgets</h2>
               </div>
               <motion.div
                 animate={{ rotate: 360 }}
@@ -478,7 +478,7 @@ export default function Budget() {
             </div>
 
             {/* Quick filters */}
-            <div className="flex flex-wrap items-center gap-2 mb-4">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               {[
                 { key: 'all', label: 'All' },
                 { key: 'monthly', label: 'Monthly' },
@@ -488,7 +488,7 @@ export default function Budget() {
                 <button
                   key={f.key}
                   onClick={() => setFilterPeriod(f.key)}
-                  className={`px-3 py-1.5 text-sm rounded-full border transition-all ${
+                  className={`px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-full border transition-all ${
                     filterPeriod === f.key
                       ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
                       : 'bg-white text-gray-700 border-gray-200 hover:border-emerald-300 hover:text-emerald-700'
@@ -500,14 +500,14 @@ export default function Budget() {
               {filterPeriod !== 'all' && (
                 <button
                   onClick={() => setFilterPeriod('all')}
-                  className="px-3 py-1.5 text-sm rounded-full bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200"
+                  className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-full bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200"
                 >
                   Clear Filter
                 </button>
               )}
             </div>
 
-            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="space-y-2 sm:space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
               <AnimatePresence>
                 {visibleBudgets.length === 0 ? (
                   <motion.div
@@ -553,18 +553,18 @@ export default function Budget() {
                           boxShadow: '0 15px 40px rgba(16, 185, 129, 0.15)',
                           x: 10
                         }}
-                        className={`p-4 sm:p-6 rounded-2xl border-2 ${budgetStatus.status === 'fully-spent' ? 'border-red-300 bg-red-50' : colorScheme.border + ' ' + colorScheme.bg} transition-all relative overflow-hidden group`}
+                        className={`p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl border-2 ${budgetStatus.status === 'fully-spent' ? 'border-red-300 bg-red-50' : colorScheme.border + ' ' + colorScheme.bg} transition-all relative overflow-hidden group`}
                       >
                         {/* Animated background gradient */}
                         <motion.div
                           className={`absolute inset-0 ${budgetStatus.status === 'fully-spent' ? 'bg-gradient-to-r from-red-500 to-pink-500' : `bg-gradient-to-r ${colorScheme.from} ${colorScheme.to}`} opacity-0 group-hover:opacity-10 transition-opacity`}
                         />
-                        <div className="relative flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                          <div className="flex items-start gap-4 flex-1">
+                        <div className="relative flex flex-col md:flex-row md:justify-between md:items-start gap-3 sm:gap-4">
+                          <div className="flex items-start gap-2 sm:gap-4 flex-1 min-w-0">
                             <motion.div
                               whileHover={{ rotate: 360, scale: 1.1 }}
                               transition={{ duration: 0.6 }}
-                              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${budgetStatus.status === 'fully-spent' ? 'from-red-500 to-pink-500' : colorScheme.from + ' ' + colorScheme.to} flex items-center justify-center text-white font-bold text-2xl shadow-lg flex-shrink-0`}
+                              className={`w-12 h-12 sm:w-16 sm:h-16 rounded-lg sm:rounded-2xl bg-gradient-to-br ${budgetStatus.status === 'fully-spent' ? 'from-red-500 to-pink-500' : colorScheme.from + ' ' + colorScheme.to} flex items-center justify-center text-white font-bold text-lg sm:text-2xl shadow-lg flex-shrink-0`}
                             >
                               {catName.charAt(0)}
                             </motion.div>
