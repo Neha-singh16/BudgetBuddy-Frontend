@@ -198,7 +198,7 @@ export default function ExpenseTracker() {
   const avgExpense = expenseCount ? Math.round(totalExpenses / expenseCount) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 p-4 md:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 p-3 sm:p-4 md:p-6 relative overflow-hidden">
       <FloatingReceipts />
       
       {/* Decorative gradient orbs */}
@@ -210,42 +210,42 @@ export default function ExpenseTracker() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
             <motion.div
               animate={{ 
                 rotate: [0, -5, 5, 0],
                 scale: [1, 1.05, 1]
               }}
               transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-              className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-xl"
+              className="w-14 sm:w-16 md:w-20 h-14 sm:h-16 md:h-20 rounded-lg sm:rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg flex-shrink-0"
             >
-              <CreditCard className="text-white w-8 h-8" />
+              <CreditCard className="text-white w-7 sm:w-8 md:w-10" />
             </motion.div>
             <div>
-              <h1 className="text-3xl md:text-5xl font-black bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-3">
-                Expense Tracker
+              <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
+                Expense
                 <motion.div
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <Sparkles className="text-orange-500 w-6 h-6" />
+                  <Sparkles className="text-orange-500 w-5 sm:w-6 md:w-7" />
                 </motion.div>
               </h1>
-              <p className="text-gray-600 font-medium">Monitor your spending and stay on budget</p>
+              <p className="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Monitor your spending</p>
             </div>
           </div>
         </motion.div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* Stats Cards - Mobile-First */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(249, 115, 22, 0.3)' }}
-            className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-orange-200/50 shadow-lg relative overflow-hidden cursor-pointer"
+            className="bg-white/70 backdrop-blur-xl rounded-lg sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-orange-200/50 shadow-md sm:shadow-lg relative overflow-hidden cursor-pointer"
             onClick={() => {
               if (listRef.current) {
                 const rectTop = listRef.current.getBoundingClientRect().top;
@@ -254,21 +254,21 @@ export default function ExpenseTracker() {
               }
             }}
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-2xl" />
+            <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-2xl" />
             <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-                  <ArrowDownCircle className="text-white w-6 h-6" />
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className="w-11 sm:w-12 md:w-14 h-11 sm:h-12 md:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+                  <ArrowDownCircle className="text-white w-5 sm:w-6 md:w-7" />
                 </div>
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <TrendingDown className="text-orange-500 w-5 h-5" />
+                  <TrendingDown className="text-orange-500 w-4 sm:w-5 md:w-6" />
                 </motion.div>
               </div>
-              <p className="text-gray-600 text-sm font-medium mb-1">Total Spent</p>
-              <p className="text-3xl font-black text-orange-600">₹{totalExpenses.toLocaleString()}</p>
+              <p className="text-gray-600 text-xs sm:text-sm font-medium mb-1">Total Spent</p>
+              <p className="text-xl sm:text-2xl md:text-3xl font-black text-orange-600">₹{totalExpenses.toLocaleString()}</p>
             </div>
           </motion.div>
 

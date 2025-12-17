@@ -203,25 +203,25 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30 p-4 md:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30 p-3 sm:p-4 md:p-6">
       {/* Header */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4"
+        className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 sm:mb-8 gap-3 sm:gap-4"
       >
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
             Dashboard
           </h1>
-          <p className="text-gray-600">Welcome back! Here's your financial overview</p>
+          <p className="text-sm sm:text-base text-gray-600">Welcome back! Here's your financial overview</p>
         </div>
         <motion.select
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           value={period}
           onChange={handlePeriodChange}
-          className="px-4 py-2 rounded-xl bg-white border-2 border-emerald-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all shadow-sm"
+          className="px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg sm:rounded-xl bg-white border-2 border-emerald-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all shadow-sm"
         >
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
@@ -229,12 +229,12 @@ export default function Dashboard() {
         </motion.select>
       </motion.div>
 
-      {/* Stats Cards */}
+      {/* Stats Cards - Mobile-First (Single Column on Mobile) */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-4 mb-8"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-8"
       >
         {statCards.map((card, idx) => (
           <motion.div
@@ -244,44 +244,44 @@ export default function Dashboard() {
             className="relative group cursor-pointer"
             onClick={() => handleStatClick(card.label)}
           >
-            <div className={`h-full p-5 bg-gradient-to-br ${card.gradient} rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 text-white overflow-hidden`}>
+            <div className={`h-full p-4 sm:p-5 md:p-6 bg-gradient-to-br ${card.gradient} rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 text-white overflow-hidden`}>
               {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12"></div>
+              <div className="absolute top-0 right-0 w-20 sm:w-24 h-20 sm:h-24 bg-white/10 rounded-full -mr-10 sm:-mr-12 -mt-10 sm:-mt-12"></div>
               
               <div className="relative z-10">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm font-medium text-white/80">{card.label}</p>
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <p className="text-xs sm:text-sm font-medium text-white/80">{card.label}</p>
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
                   >
-                    <card.icon className="w-5 h-5 text-white/80" />
+                    <card.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
                   </motion.div>
                 </div>
                 
                 <div className="flex items-end justify-between">
-                  <p className="text-2xl font-bold">{card.value}</p>
+                  <p className="text-xl sm:text-2xl md:text-3xl font-bold">{card.value}</p>
                   {card.trend && (
                     <motion.div
                       animate={{ y: [0, -3, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       {card.trend === 'up' ? (
-                        <TrendingUp className="w-5 h-5" />
+                        <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                       ) : (
-                        <TrendingDown className="w-5 h-5" />
+                        <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5" />
                       )}
                     </motion.div>
                   )}
                 </div>
                 
                 {card.subtitle && (
-                  <p className="text-xs text-white/70 mt-2">{card.subtitle}</p>
+                  <p className="text-xs sm:text-sm text-white/70 mt-2 sm:mt-3">{card.subtitle}</p>
                 )}
               </div>
               
               {/* Hover glow effect */}
-              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300 rounded-xl sm:rounded-2xl"></div>
             </div>
           </motion.div>
         ))}
@@ -290,11 +290,11 @@ export default function Dashboard() {
       {/* Charts */}
       <motion.div 
         variants={containerVariants}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 mb-8"
       >
         {/* Expense Breakdown */}
-        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 shadow-lg border border-emerald-100/50">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-emerald-100/50">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
             <PiggyBank className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
             Expense Breakdown
           </h2>
@@ -329,8 +329,8 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Spending Trend */}
-        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-2xl p-4 sm:p-6 shadow-lg border border-teal-100/50">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-teal-100/50">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
             <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
             Spending Trend
           </h2>
@@ -367,14 +367,14 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Recent Activity & Quick Actions */}
-      <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
         {/* Recent Activity */}
-        <motion.div variants={cardVariants} className="lg:col-span-2 bg-white/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-purple-600" />
+        <motion.div variants={cardVariants} className="lg:col-span-2 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-gray-100">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
+            <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
             Recent Activity
           </h2>
-          <div className="space-y-3 max-h-96 overflow-y-auto">
+          <div className="space-y-3 sm:space-y-4 max-h-96 overflow-y-auto">
             {expenses.slice(0, 10).map((e, idx) => {
               const name = categories.find(c => c._id === e.category)?.name || 'Unknown';
               return (
@@ -384,18 +384,18 @@ export default function Dashboard() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
                   whileHover={{ x: 5, backgroundColor: 'rgba(16, 185, 129, 0.05)' }}
-                  className="flex justify-between items-center p-3 rounded-xl border border-gray-100 hover:border-emerald-200 transition-all"
+                  className="flex justify-between items-center p-3 sm:p-4 rounded-lg sm:rounded-xl border border-gray-100 hover:border-emerald-200 transition-all"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-semibold">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-semibold text-base sm:text-lg flex-shrink-0">
                       {name.charAt(0)}
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-800">{name}</p>
-                      <p className="text-sm text-gray-500">{new Date(e.date).toLocaleDateString()}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-sm sm:text-base text-gray-800 truncate">{name}</p>
+                      <p className="text-xs sm:text-sm text-gray-500">{new Date(e.date).toLocaleDateString()}</p>
                     </div>
                   </div>
-                  <span className="font-bold text-red-600">-₹{e.amount}</span>
+                  <span className="font-bold text-sm sm:text-base text-red-600 flex-shrink-0 ml-2">-₹{e.amount}</span>
                 </motion.div>
               );
             })}
@@ -403,13 +403,13 @@ export default function Dashboard() {
         </motion.div>
       
         {/* Quick Actions */}
-        <motion.div variants={cardVariants} className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-4 md:p-6 shadow-lg text-white">
-          <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-            <Plus className="w-5 h-5" />
+        <motion.div variants={cardVariants} className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg text-white">
+          <h2 className="text-base sm:text-lg md:text-xl font-bold mb-5 sm:mb-6 flex items-center gap-2">
+            <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
             Quick Actions
           </h2>
           
-          <div className="space-y-3">
+          <div className="space-y-3 sm:space-y-4">
             {[
               { label: 'Add Expense', path: '/app/expense', icon: Plus, color: 'from-orange-400 to-red-400' },
               { label: 'Add Budget', path: '/app/budget', icon: PiggyBank, color: 'from-purple-400 to-pink-400' },
@@ -423,15 +423,15 @@ export default function Dashboard() {
                 whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate(action.path)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl transition-all group"
+                className="w-full flex items-center justify-between px-3 sm:px-4 py-3 sm:py-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-lg sm:rounded-xl transition-all group"
               >
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${action.color} flex items-center justify-center`}>
-                    <action.icon className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br ${action.color} flex items-center justify-center flex-shrink-0`}>
+                    <action.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <span className="font-medium">{action.label}</span>
+                  <span className="font-medium text-sm sm:text-base">{action.label}</span>
                 </div>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform flex-shrink-0" />
               </motion.button>
             ))}
           </div>
@@ -441,16 +441,16 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="mt-6 pt-6 border-t border-white/20"
+            className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/20"
           >
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                <p className="text-xs text-white/70">This Month</p>
-                <p className="text-lg font-bold">₹{totalSpent.toLocaleString()}</p>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+                <p className="text-xs sm:text-sm text-white/70">This Month</p>
+                <p className="text-lg sm:text-2xl font-bold">₹{totalSpent.toLocaleString()}</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                <p className="text-xs text-white/70">Budgets</p>
-                <p className="text-lg font-bold">{activeCount}</p>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+                <p className="text-xs sm:text-sm text-white/70">Budgets</p>
+                <p className="text-lg sm:text-2xl font-bold">{activeCount}</p>
               </div>
             </div>
           </motion.div>

@@ -93,12 +93,12 @@ const Body = () => {
   if (user === undefined) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-beige">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
-          <main className="flex-1 overflow-auto p-2 sm:p-4 md:p-6 bg-beige">
+          <main className="flex-1 overflow-auto bg-gray-50">
             <Outlet />
           </main>
         </div>
