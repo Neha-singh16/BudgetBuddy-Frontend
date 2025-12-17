@@ -249,16 +249,16 @@ export default function AuthPage() {
       <div className="absolute inset-0 bg-gradient-to-tr from-emerald-600/10 via-transparent to-teal-600/10" />
       
       {/* Main Content */}
-      <div className="relative min-h-screen flex items-center justify-center p-4 md:p-6">
+      <div className="relative min-h-screen flex items-center justify-center px-3 xs:px-4 sm:px-6 md:px-6 py-4 xs:py-6 sm:py-8">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-4xl lg:max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden"
+          className="w-full max-w-3xl lg:max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white/95 backdrop-blur-xl rounded-2xl xs:rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden"
         >
           {/* Left Side - Branding/Info */}
           <motion.div 
-            className="relative bg-gradient-to-br from-emerald-600 via-teal-600 to-green-700 p-5 sm:p-7 md:p-10 flex flex-col justify-center items-center text-white overflow-hidden"
+            className="relative bg-gradient-to-br from-emerald-600 via-teal-600 to-green-700 px-4 xs:px-5 sm:px-7 md:px-10 py-6 xs:py-8 sm:py-10 md:py-10 flex flex-col justify-center items-center text-white overflow-hidden"
             animate={{
               background: isLogin 
                 ? "linear-gradient(to bottom right, #059669, #0d9488, #15803d)"
@@ -268,19 +268,19 @@ export default function AuthPage() {
           >
             {/* Decorative Elements */}
             <motion.div
-              className="absolute top-10 right-10 opacity-20"
+              className="absolute top-6 xs:top-8 sm:top-10 right-6 xs:right-8 sm:right-10 opacity-20"
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             >
-              <Coins size={100} />
+              <Coins size={70} className="xs:w-20 xs:h-20 sm:w-24 sm:h-24" />
             </motion.div>
             
             <motion.div
-              className="absolute bottom-10 left-10 opacity-20"
+              className="absolute bottom-6 xs:bottom-8 sm:bottom-10 left-6 xs:left-8 sm:left-10 opacity-20"
               animate={{ rotate: -360 }}
               transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
             >
-              <PiggyBank size={80} />
+              <PiggyBank size={60} className="xs:w-16 xs:h-16 sm:w-20 sm:h-20" />
             </motion.div>
 
             <motion.div
@@ -294,60 +294,60 @@ export default function AuthPage() {
               <motion.div
                 animate={{ scale: [1, 1.08, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="mb-4 flex justify-center"
+                className="mb-2 xs:mb-3 sm:mb-4 flex justify-center"
               >
-                <div className="bg-white/20 backdrop-blur-md p-4 sm:p-5 rounded-full">
-                  <Wallet size={42} strokeWidth={1.5} className="sm:w-12 sm:h-12" />
+                <div className="bg-white/20 backdrop-blur-md p-2.5 xs:p-3 sm:p-4 rounded-full">
+                  <Wallet size={32} strokeWidth={1.5} className="xs:w-8 xs:h-8 sm:w-10 sm:h-10" />
                 </div>
               </motion.div>
               
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 sm:mb-3 drop-shadow-lg">
+              <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold mb-1 xs:mb-2 sm:mb-3 drop-shadow-lg">
                 Budget<span className="text-emerald-200">Buddy</span>
               </h1>
               
-              <p className="text-emerald-100 text-sm sm:text-base md:text-lg mb-5 sm:mb-7 max-w-md">
+              <p className="text-emerald-100 text-xs xs:text-sm sm:text-base mb-3 xs:mb-4 sm:mb-5 max-w-sm">
                 {isLogin 
                   ? "Welcome back! Take control of your finances and achieve your money goals."
                   : "Start your journey to financial freedom. Track, save, and grow your wealth."}
               </p>
 
-              <div className="flex gap-3 sm:gap-6 justify-center items-center flex-wrap">
+              <div className="flex gap-2 xs:gap-3 sm:gap-4 justify-center items-center flex-wrap">
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   className="text-center"
                 >
-                  <div className="bg-white/20 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl mb-1 sm:mb-2">
-                    <TrendingUp size={24} className="sm:w-7 sm:h-7" />
+                  <div className="bg-white/20 backdrop-blur-md p-2 xs:p-2.5 sm:p-3 rounded-xl xs:rounded-2xl mb-0.5 xs:mb-1 sm:mb-2">
+                    <TrendingUp size={20} className="xs:w-5 xs:h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <p className="text-[11px] sm:text-sm text-emerald-100">Track Growth</p>
+                  <p className="text-[10px] xs:text-xs sm:text-sm text-emerald-100">Track Growth</p>
                 </motion.div>
                 
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   className="text-center"
                 >
-                  <div className="bg-white/20 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl mb-1 sm:mb-2">
-                    <PiggyBank size={24} className="sm:w-7 sm:h-7" />
+                  <div className="bg-white/20 backdrop-blur-md p-2 xs:p-2.5 sm:p-3 rounded-xl xs:rounded-2xl mb-0.5 xs:mb-1 sm:mb-2">
+                    <PiggyBank size={20} className="xs:w-5 xs:h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <p className="text-[11px] sm:text-sm text-emerald-100">Save Smart</p>
+                  <p className="text-[10px] xs:text-xs sm:text-sm text-emerald-100">Save Smart</p>
                 </motion.div>
                 
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   className="text-center"
                 >
-                  <div className="bg-white/20 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl mb-1 sm:mb-2">
-                    <DollarSign size={24} className="sm:w-7 sm:h-7" />
+                  <div className="bg-white/20 backdrop-blur-md p-2 xs:p-2.5 sm:p-3 rounded-xl xs:rounded-2xl mb-0.5 xs:mb-1 sm:mb-2">
+                    <DollarSign size={20} className="xs:w-5 xs:h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <p className="text-[11px] sm:text-sm text-emerald-100">Earn More</p>
+                  <p className="text-[10px] xs:text-xs sm:text-sm text-emerald-100">Earn More</p>
                 </motion.div>
               </div>
             </motion.div>
           </motion.div>
 
           {/* Right Side - Form */}
-          <div className="p-5 sm:p-8 md:p-12 flex items-center justify-center">
-            <div className="w-full max-w-md">
+          <div className="px-4 xs:px-5 sm:px-8 md:px-12 py-6 xs:py-8 sm:py-10 flex items-center justify-center">
+            <div className="w-full max-w-sm">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={isLogin ? "login" : "signup"}
@@ -356,28 +356,28 @@ export default function AuthPage() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="mb-5 sm:mb-8">
+                  <div className="mb-4 xs:mb-5 sm:mb-6 md:mb-8">
                     <motion.h2 
-                      className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2"
+                      className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-1 xs:mb-2"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                     >
                       {isLogin ? 'Welcome Back!' : 'Create Account'}
                     </motion.h2>
-                    <p className="text-gray-600 text-sm sm:text-base">
+                    <p className="text-gray-600 text-xs xs:text-sm sm:text-base">
                       {isLogin ? 'Login to manage your budget' : 'Sign up to start saving money'}
                     </p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                  <form onSubmit={handleSubmit} className="space-y-3 xs:space-y-3.5 sm:space-y-5">
                     {!isLogin && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                       >
-                        <label className="block text-gray-700 font-medium mb-2">Full Name</label>
-                        <div className="flex flex-col sm:flex-row gap-3">
+                        <label className="block text-gray-700 font-medium mb-1.5 xs:mb-2 text-xs xs:text-sm">Full Name</label>
+                        <div className="flex flex-col sm:flex-row gap-2 xs:gap-2.5 sm:gap-3">
                           <motion.input
                             whileFocus={{ scale: 1.02 }}
                             name="firstName"
@@ -387,7 +387,7 @@ export default function AuthPage() {
                             onBlur={() => setFocusedInput('')}
                             placeholder="First"
                             required
-                            className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
+                            className="flex-1 px-3 xs:px-3.5 sm:px-4 py-2.5 xs:py-2.5 sm:py-3 text-sm xs:text-sm sm:text-base border-2 border-gray-200 rounded-lg xs:rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
                           />
                           <motion.input
                             whileFocus={{ scale: 1.02 }}
@@ -398,14 +398,14 @@ export default function AuthPage() {
                             onBlur={() => setFocusedInput('')}
                             placeholder="Last"
                             required
-                            className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
+                            className="flex-1 px-3 xs:px-3.5 sm:px-4 py-2.5 xs:py-2.5 sm:py-3 text-sm xs:text-sm sm:text-base border-2 border-gray-200 rounded-lg xs:rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
                           />
                         </div>
                       </motion.div>
                     )}
 
                     <div>
-                        <label className="block text-gray-700 font-medium mb-2">Email Address</label>
+                        <label className="block text-gray-700 font-medium mb-1.5 xs:mb-2 text-xs xs:text-sm">Email Address</label>
                       <motion.input
                         whileFocus={{ scale: 1.02 }}
                         name="email"
@@ -416,12 +416,12 @@ export default function AuthPage() {
                         onBlur={() => setFocusedInput('')}
                         placeholder="you@example.com"
                         required
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
+                        className="w-full px-3 xs:px-3.5 sm:px-4 py-2.5 xs:py-2.5 sm:py-3 text-sm xs:text-sm sm:text-base border-2 border-gray-200 rounded-lg xs:rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
                       />
                     </div>
 
                     <div className="relative">
-                      <label className="block text-gray-700 font-medium mb-2">Password</label>
+                      <label className="block text-gray-700 font-medium mb-1.5 xs:mb-2 text-xs xs:text-sm">Password</label>
                       <motion.input
                         whileFocus={{ scale: 1.02 }}
                         name="password"
@@ -433,16 +433,16 @@ export default function AuthPage() {
                         placeholder="••••••••"
                         required
                         autoComplete="current-password"
-                        className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
+                        className="w-full px-3 xs:px-3.5 sm:px-4 py-2.5 xs:py-2.5 sm:py-3 pr-10 xs:pr-11 sm:pr-12 text-sm xs:text-sm sm:text-base border-2 border-gray-200 rounded-lg xs:rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
                       />
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         type="button"
                         onClick={toggleShow}
-                        className="absolute right-4 top-[42px] text-gray-500 hover:text-emerald-600 transition-colors"
+                        className="absolute right-3 xs:right-3.5 sm:right-4 top-[38px] xs:top-[39px] sm:top-[42px] text-gray-500 hover:text-emerald-600 transition-colors flex-shrink-0"
                       >
-                        {showPwd ? <EyeOff size={20} /> : <Eye size={20} />}
+                        {showPwd ? <EyeOff size={18} className="xs:w-5 xs:h-5 sm:w-5 sm:h-5" /> : <Eye size={18} className="xs:w-5 xs:h-5 sm:w-5 sm:h-5" />}
                       </motion.button>
                     </div>
 
@@ -453,7 +453,7 @@ export default function AuthPage() {
                         exit={{ opacity: 0, height: 0 }}
                         className="relative"
                       >
-                        <label className="block text-gray-700 font-medium mb-2">Confirm Password</label>
+                        <label className="block text-gray-700 font-medium mb-1.5 xs:mb-2 text-xs xs:text-sm">Confirm Password</label>
                         <motion.input
                           whileFocus={{ scale: 1.02 }}
                           name="confirm"
@@ -464,7 +464,7 @@ export default function AuthPage() {
                           onBlur={() => setFocusedInput('')}
                           placeholder="••••••••"
                           required
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
+                          className="w-full px-3 xs:px-3.5 sm:px-4 py-2.5 xs:py-2.5 sm:py-3 text-sm xs:text-sm sm:text-base border-2 border-gray-200 rounded-lg xs:rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all duration-300 bg-gray-50 focus:bg-white"
                         />
                       </motion.div>
                     )}
@@ -475,9 +475,9 @@ export default function AuthPage() {
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="bg-red-50 border-l-4 border-red-500 p-3 rounded"
+                          className="bg-red-50 border-l-4 border-red-500 p-2.5 xs:p-3 rounded text-xs xs:text-sm"
                         >
-                          <p className="text-red-700 text-sm font-medium">{error}</p>
+                          <p className="text-red-700 font-medium">{error}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -486,28 +486,28 @@ export default function AuthPage() {
                       whileHover={{ scale: 1.02, boxShadow: "0 10px 30px rgba(16, 185, 129, 0.3)" }}
                       whileTap={{ scale: 0.98 }}
                       type="submit"
-                      className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 mt-4 sm:mt-6"
+                      className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold py-2.5 xs:py-3 px-4 sm:px-6 rounded-lg xs:rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 mt-2 xs:mt-3 sm:mt-4 md:mt-6 text-sm xs:text-sm sm:text-base"
                     >
                       {isLogin ? 'Sign In' : 'Create Account'}
                       <motion.div
                         animate={{ x: [0, 5, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity }}
                       >
-                        <DollarSign size={20} />
+                        <DollarSign size={18} className="xs:w-5 xs:h-5 sm:w-5 sm:h-5" />
                       </motion.div>
                     </motion.button>
 
-                    <div className="relative my-6">
+                    <div className="relative my-3 xs:my-4 sm:my-6">
                       <div className="absolute inset-0 flex items-center">
                         <div className="w-full border-t border-gray-300"></div>
                       </div>
-                      <div className="relative flex justify-center text-sm">
-                        <span className="px-4 bg-white text-gray-500">or</span>
+                      <div className="relative flex justify-center text-xs xs:text-sm">
+                        <span className="px-3 bg-white text-gray-500">or</span>
                       </div>
                     </div>
 
                     <div className="text-center">
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 text-xs xs:text-sm">
                         {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
                         <motion.button
                           whileHover={{ scale: 1.05 }}

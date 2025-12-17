@@ -203,25 +203,25 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30 p-3 sm:p-4 md:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30 px-3 xs:px-4 sm:px-5 md:px-6 py-3 xs:py-4 sm:py-6 md:py-8">
       {/* Header */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 sm:mb-8 gap-3 sm:gap-4"
+        className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 xs:mb-10 sm:mb-12 md:mb-10 gap-4 xs:gap-5 sm:gap-6"
       >
         <div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2 xs:mb-3">
             Dashboard
           </h1>
-          <p className="text-sm sm:text-base text-gray-600">Welcome back! Here's your financial overview</p>
+          <p className="text-xs xs:text-sm sm:text-base text-gray-600">Welcome back! Here's your financial overview</p>
         </div>
         <motion.select
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           value={period}
           onChange={handlePeriodChange}
-          className="px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg sm:rounded-xl bg-white border-2 border-emerald-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all shadow-sm"
+          className="px-3 xs:px-4 sm:px-5 py-2.5 xs:py-3 sm:py-3.5 text-xs xs:text-sm sm:text-base rounded-lg xs:rounded-xl sm:rounded-2xl bg-white border-2 border-emerald-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all shadow-sm w-full md:w-auto"
         >
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
@@ -234,7 +234,7 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-8"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 xs:gap-4 sm:gap-5 md:gap-6 mb-8 xs:mb-10 sm:mb-12"
       >
         {statCards.map((card, idx) => (
           <motion.div
@@ -244,44 +244,44 @@ export default function Dashboard() {
             className="relative group cursor-pointer"
             onClick={() => handleStatClick(card.label)}
           >
-            <div className={`h-full p-4 sm:p-5 md:p-6 bg-gradient-to-br ${card.gradient} rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 text-white overflow-hidden`}>
+            <div className={`h-full p-3 xs:p-4 sm:p-5 md:p-6 bg-gradient-to-br ${card.gradient} rounded-lg xs:rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 text-white overflow-hidden`}>
               {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-20 sm:w-24 h-20 sm:h-24 bg-white/10 rounded-full -mr-10 sm:-mr-12 -mt-10 sm:-mt-12"></div>
+              <div className="absolute top-0 right-0 w-16 xs:w-20 sm:w-24 h-16 xs:h-20 sm:h-24 bg-white/10 rounded-full -mr-8 xs:-mr-10 sm:-mr-12 -mt-8 xs:-mt-10 sm:-mt-12"></div>
               
               <div className="relative z-10">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <p className="text-xs sm:text-sm font-medium text-white/80">{card.label}</p>
+                <div className="flex items-center justify-between mb-2 xs:mb-3 sm:mb-4">
+                  <p className="text-xs xs:text-sm font-medium text-white/80">{card.label}</p>
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
                   >
-                    <card.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
+                    <card.icon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-white/80" />
                   </motion.div>
                 </div>
                 
                 <div className="flex items-end justify-between">
-                  <p className="text-xl sm:text-2xl md:text-3xl font-bold">{card.value}</p>
+                  <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold">{card.value}</p>
                   {card.trend && (
                     <motion.div
                       animate={{ y: [0, -3, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       {card.trend === 'up' ? (
-                        <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <TrendingUp className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                       ) : (
-                        <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <TrendingDown className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
                       )}
                     </motion.div>
                   )}
                 </div>
                 
                 {card.subtitle && (
-                  <p className="text-xs sm:text-sm text-white/70 mt-2 sm:mt-3">{card.subtitle}</p>
+                  <p className="text-xs xs:text-xs sm:text-sm text-white/70 mt-2 xs:mt-2.5 sm:mt-3 line-clamp-2">{card.subtitle}</p>
                 )}
               </div>
               
               {/* Hover glow effect */}
-              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300 rounded-xl sm:rounded-2xl"></div>
+              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300 rounded-lg xs:rounded-xl sm:rounded-2xl"></div>
             </div>
           </motion.div>
         ))}
@@ -290,16 +290,16 @@ export default function Dashboard() {
       {/* Charts */}
       <motion.div 
         variants={containerVariants}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 mb-8"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 mb-8 xs:mb-10 sm:mb-12"
       >
         {/* Expense Breakdown */}
-        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-emerald-100/50">
-          <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
-            <PiggyBank className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
-            Expense Breakdown
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-lg xs:rounded-xl sm:rounded-2xl p-3 xs:p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-emerald-100/50">
+          <h2 className="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-3 xs:mb-4 sm:mb-6 flex items-center gap-2">
+            <PiggyBank className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
+            <span>Expense Breakdown</span>
           </h2>
           {breakdownData.length ? (
-            <ResponsiveContainer width="100%" height={280}>
+            <ResponsiveContainer width="100%" height={window.innerWidth < 640 ? 220 : 280}>
               <PieChart>
                 <Pie
                   data={breakdownData}
@@ -307,7 +307,7 @@ export default function Dashboard() {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={window.innerWidth < 640 ? 70 : 90}
+                  outerRadius={window.innerWidth < 480 ? 50 : window.innerWidth < 640 ? 70 : 90}
                   label={({ name, percent }) => {
                     const shortName = name.length > 8 ? name.substring(0, 6) + '..' : name;
                     return `${shortName} ${(percent * 100).toFixed(0)}%`;
@@ -322,20 +322,20 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-64 flex items-center justify-center">
-              <p className="text-gray-400">No expenses yet. Start tracking!</p>
+            <div className="h-48 xs:h-56 sm:h-64 flex items-center justify-center">
+              <p className="text-gray-400 text-xs xs:text-sm">No expenses yet. Start tracking!</p>
             </div>
           )}
         </motion.div>
 
         {/* Spending Trend */}
-        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-teal-100/50">
-          <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
-            Spending Trend
+        <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-xl rounded-lg xs:rounded-xl sm:rounded-2xl p-3 xs:p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-teal-100/50">
+          <h2 className="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-3 xs:mb-4 sm:mb-6 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-teal-600 flex-shrink-0" />
+            <span>Spending Trend</span>
           </h2>
           {trendData.length ? (
-            <ResponsiveContainer width="100%" height={280}>
+            <ResponsiveContainer width="100%" height={window.innerWidth < 640 ? 220 : 280}>
               <LineChart data={trendData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
@@ -344,8 +344,8 @@ export default function Dashboard() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="date" tick={{fontSize: 12}} />
-                <YAxis tick={{fontSize: 12}} />
+                <XAxis dataKey="date" tick={{fontSize: window.innerWidth < 480 ? 10 : 12}} />
+                <YAxis tick={{fontSize: window.innerWidth < 480 ? 10 : 12}} />
                 <Line
                   type="monotone"
                   dataKey="value"
@@ -359,22 +359,22 @@ export default function Dashboard() {
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-64 flex items-center justify-center">
-              <p className="text-gray-400">No spending data yet</p>
+            <div className="h-48 xs:h-56 sm:h-64 flex items-center justify-center">
+              <p className="text-gray-400 text-xs xs:text-sm">No spending data yet</p>
             </div>
           )}
         </motion.div>
       </motion.div>
 
       {/* Recent Activity & Quick Actions */}
-      <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
+      <motion.div variants={containerVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4 xs:gap-5 sm:gap-6">
         {/* Recent Activity */}
-        <motion.div variants={cardVariants} className="lg:col-span-2 bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-gray-100">
-          <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
-            <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
-            Recent Activity
+        <motion.div variants={cardVariants} className="lg:col-span-2 bg-white/80 backdrop-blur-xl rounded-lg xs:rounded-xl sm:rounded-2xl p-3 xs:p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg border border-gray-100">
+          <h2 className="text-sm xs:text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-3 xs:mb-4 sm:mb-6 flex items-center gap-2">
+            <CreditCard className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-purple-600 flex-shrink-0" />
+            <span>Recent Activity</span>
           </h2>
-          <div className="space-y-3 sm:space-y-4 max-h-96 overflow-y-auto">
+          <div className="space-y-2 xs:space-y-3 sm:space-y-4 max-h-96 overflow-y-auto">
             {expenses.slice(0, 10).map((e, idx) => {
               const name = categories.find(c => c._id === e.category)?.name || 'Unknown';
               return (
@@ -384,18 +384,18 @@ export default function Dashboard() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
                   whileHover={{ x: 5, backgroundColor: 'rgba(16, 185, 129, 0.05)' }}
-                  className="flex justify-between items-center p-3 sm:p-4 rounded-lg sm:rounded-xl border border-gray-100 hover:border-emerald-200 transition-all"
+                  className="flex justify-between items-center p-2 xs:p-3 sm:p-4 rounded-lg xs:rounded-xl border border-gray-100 hover:border-emerald-200 transition-all gap-2 xs:gap-3 sm:gap-4"
                 >
-                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-semibold text-base sm:text-lg flex-shrink-0">
+                  <div className="flex items-center gap-2 xs:gap-3 sm:gap-4 min-w-0">
+                    <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-semibold text-xs xs:text-sm sm:text-base flex-shrink-0">
                       {name.charAt(0)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="font-semibold text-sm sm:text-base text-gray-800 truncate">{name}</p>
-                      <p className="text-xs sm:text-sm text-gray-500">{new Date(e.date).toLocaleDateString()}</p>
+                      <p className="font-semibold text-xs xs:text-sm sm:text-base text-gray-800 truncate">{name}</p>
+                      <p className="text-xs text-gray-500">{new Date(e.date).toLocaleDateString()}</p>
                     </div>
                   </div>
-                  <span className="font-bold text-sm sm:text-base text-red-600 flex-shrink-0 ml-2">-₹{e.amount}</span>
+                  <span className="font-bold text-xs xs:text-sm sm:text-base text-red-600 flex-shrink-0">-₹{Number(e.amount).toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
                 </motion.div>
               );
             })}
@@ -403,13 +403,13 @@ export default function Dashboard() {
         </motion.div>
       
         {/* Quick Actions */}
-        <motion.div variants={cardVariants} className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg text-white">
-          <h2 className="text-base sm:text-lg md:text-xl font-bold mb-5 sm:mb-6 flex items-center gap-2">
-            <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+        <motion.div variants={cardVariants} className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg xs:rounded-xl sm:rounded-2xl p-3 xs:p-4 sm:p-5 md:p-6 shadow-md sm:shadow-lg text-white">
+          <h2 className="text-sm xs:text-base sm:text-lg md:text-xl font-bold mb-4 xs:mb-5 sm:mb-6 flex items-center gap-2">
+            <Plus className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5" />
             Quick Actions
           </h2>
           
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-2 xs:space-y-3 sm:space-y-4">
             {[
               { label: 'Add Expense', path: '/app/expense', icon: Plus, color: 'from-orange-400 to-red-400' },
               { label: 'Add Budget', path: '/app/budget', icon: PiggyBank, color: 'from-purple-400 to-pink-400' },
@@ -423,15 +423,15 @@ export default function Dashboard() {
                 whileHover={{ scale: 1.05, x: 5 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate(action.path)}
-                className="w-full flex items-center justify-between px-3 sm:px-4 py-3 sm:py-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-lg sm:rounded-xl transition-all group"
+                className="w-full flex items-center justify-between px-2 xs:px-3 sm:px-4 py-2.5 xs:py-3 sm:py-4 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-lg xs:rounded-xl transition-all group gap-2"
               >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br ${action.color} flex items-center justify-center flex-shrink-0`}>
-                    <action.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <div className="flex items-center gap-2 xs:gap-3 sm:gap-4 min-w-0">
+                  <div className={`w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br ${action.color} flex items-center justify-center flex-shrink-0`}>
+                    <action.icon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                   </div>
-                  <span className="font-medium text-sm sm:text-base">{action.label}</span>
+                  <span className="font-medium text-xs xs:text-sm sm:text-base truncate">{action.label}</span>
                 </div>
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform flex-shrink-0" />
+                <ArrowUpRight className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform flex-shrink-0" />
               </motion.button>
             ))}
           </div>
@@ -441,16 +441,16 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/20"
+            className="mt-4 xs:mt-5 sm:mt-6 md:mt-8 pt-4 xs:pt-5 sm:pt-6 md:pt-8 border-t border-white/20"
           >
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
-                <p className="text-xs sm:text-sm text-white/70">This Month</p>
-                <p className="text-lg sm:text-2xl font-bold">₹{totalSpent.toLocaleString()}</p>
+            <div className="grid grid-cols-2 gap-2 xs:gap-3 sm:gap-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 xs:p-3 sm:p-4">
+                <p className="text-xs xs:text-xs sm:text-sm text-white/70">This Month</p>
+                <p className="text-base xs:text-lg sm:text-2xl font-bold">₹{totalSpent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
-                <p className="text-xs sm:text-sm text-white/70">Budgets</p>
-                <p className="text-lg sm:text-2xl font-bold">{activeCount}</p>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2 xs:p-3 sm:p-4">
+                <p className="text-xs xs:text-xs sm:text-sm text-white/70">Budgets</p>
+                <p className="text-base xs:text-lg sm:text-2xl font-bold">{activeCount}</p>
               </div>
             </div>
           </motion.div>

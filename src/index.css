@@ -1,1 +1,125 @@
 @import "tailwindcss";
+
+/* Mobile-First Responsive Improvements */
+
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Remove tap highlight color on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Body improvements */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Improve input styling on mobile */
+input,
+textarea,
+select {
+  font-size: 16px; /* Prevents zoom on iOS */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 0.7;
+}
+
+/* Better scrolling on mobile */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improve button interactions on mobile */
+button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Fix motion issues on mobile */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Better card layouts on mobile */
+@media (max-width: 640px) {
+  .grid {
+    gap: 0.75rem;
+  }
+}
+
+/* Improve text readability on small screens */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Safe area insets for notch devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* Improve form visibility on mobile */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+/* Better spacing for touch targets */
+button,
+input[type="button"],
+input[type="submit"],
+a {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive typography scaling */
+@media (max-width: 640px) {
+  .text-xs {
+    font-size: 0.75rem;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .text-base {
+    font-size: 1rem;
+  }
+}
