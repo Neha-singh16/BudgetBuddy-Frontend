@@ -170,32 +170,32 @@ const History = () => {
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
         >
           {/* Total Income */}
-          <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-green-200/50 shadow-lg">
-            <div className="flex items-center gap-3 mb-3">
-              <TrendingUp className="w-6 h-6 text-green-600" />
-              <h3 className="font-bold text-gray-800">Total Income</h3>
+          <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-green-200/50 shadow-lg">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+              <h3 className="font-bold text-gray-800 text-sm sm:text-base">Total Income</h3>
             </div>
-            <p className="text-3xl font-black text-green-600">₹{(balance?.totalIncome ?? 0).toLocaleString()}</p>
+            <p className="text-2xl sm:text-3xl font-black text-green-600">₹{(balance?.totalIncome ?? 0).toLocaleString()}</p>
           </div>
 
           {/* Total Expenses */}
-          <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-lg">
-            <div className="flex items-center gap-3 mb-3">
-              <TrendingDown className="w-6 h-6 text-red-600" />
-              <h3 className="font-bold text-gray-800">Total Expenses</h3>
+          <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-red-200/50 shadow-lg">
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+              <TrendingDown className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
+              <h3 className="font-bold text-gray-800 text-sm sm:text-base">Total Expenses</h3>
             </div>
-            <p className="text-3xl font-black text-red-600">₹{(balance?.totalExpenses ?? 0).toLocaleString()}</p>
+            <p className="text-2xl sm:text-3xl font-black text-red-600">₹{(balance?.totalExpenses ?? 0).toLocaleString()}</p>
           </div>
 
           {/* Net Balance */}
-          <div className={`bg-white/70 backdrop-blur-xl rounded-2xl p-6 border shadow-lg ${
+          <div className={`bg-white/70 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border shadow-lg ${
             ((balance?.balance ?? 0) >= 0) ? 'border-blue-200/50' : 'border-orange-200/50'
           }`}>
-            <div className="flex items-center gap-3 mb-3">
-              <Zap className={`w-6 h-6 ${((balance?.balance ?? 0) >= 0) ? 'text-blue-600' : 'text-orange-600'}`} />
-              <h3 className="font-bold text-gray-800">Net Balance</h3>
+            <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+              <Zap className={`w-5 h-5 sm:w-6 sm:h-6 ${((balance?.balance ?? 0) >= 0) ? 'text-blue-600' : 'text-orange-600'}`} />
+              <h3 className="font-bold text-gray-800 text-sm sm:text-base">Net Balance</h3>
             </div>
-            <p className={`text-3xl font-black ${((balance?.balance ?? 0) >= 0) ? 'text-blue-600' : 'text-orange-600'}`}>
+            <p className={`text-2xl sm:text-3xl font-black ${((balance?.balance ?? 0) >= 0) ? 'text-blue-600' : 'text-orange-600'}`}>
               ₹{(balance?.balance ?? 0).toLocaleString()}
             </p>
           </div>
@@ -206,16 +206,16 @@ const History = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border border-purple-200/50"
+          className="bg-white/80 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl border border-purple-200/50"
         >
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Spending History</h2>
-            <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Spending History</h2>
+            <div className="flex flex-wrap gap-2">
               {['all', 'weekly', 'monthly', 'yearly'].map((p) => (
                 <button
                   key={p}
                   onClick={() => setFilterPeriod(p)}
-                  className={`px-4 py-2 text-sm rounded-full transition-all ${
+                  className={`px-3 sm:px-4 py-1.5 text-xs sm:text-sm rounded-full transition-all ${
                     filterPeriod === p
                       ? 'bg-purple-600 text-white shadow-lg'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -244,7 +244,7 @@ const History = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className={`p-5 rounded-xl border-2 transition-all ${
+                    className={`p-4 sm:p-5 rounded-xl border-2 transition-all ${
                       archive.status === 'over'
                         ? 'border-red-200 bg-red-50'
                         : archive.status === 'at-limit'
