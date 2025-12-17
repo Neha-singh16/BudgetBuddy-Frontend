@@ -553,14 +553,13 @@ export default function Budget() {
                           boxShadow: '0 15px 40px rgba(16, 185, 129, 0.15)',
                           x: 10
                         }}
-                        className={`p-6 rounded-2xl border-2 ${budgetStatus.status === 'fully-spent' ? 'border-red-300 bg-red-50' : colorScheme.border + ' ' + colorScheme.bg} transition-all relative overflow-hidden group`}
+                        className={`p-4 sm:p-6 rounded-2xl border-2 ${budgetStatus.status === 'fully-spent' ? 'border-red-300 bg-red-50' : colorScheme.border + ' ' + colorScheme.bg} transition-all relative overflow-hidden group`}
                       >
                         {/* Animated background gradient */}
                         <motion.div
                           className={`absolute inset-0 ${budgetStatus.status === 'fully-spent' ? 'bg-gradient-to-r from-red-500 to-pink-500' : `bg-gradient-to-r ${colorScheme.from} ${colorScheme.to}`} opacity-0 group-hover:opacity-10 transition-opacity`}
                         />
-
-                        <div className="relative flex justify-between items-start">
+                        <div className="relative flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                           <div className="flex items-start gap-4 flex-1">
                             <motion.div
                               whileHover={{ rotate: 360, scale: 1.1 }}
@@ -570,7 +569,7 @@ export default function Budget() {
                               {catName.charAt(0)}
                             </motion.div>
                             
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
                                 <p className="font-bold text-gray-800 text-lg">{catName}</p>
                                 <div className={`px-2.5 py-0.5 rounded-full border text-xs font-semibold ${budgetStatus.color}`}>
@@ -619,7 +618,7 @@ export default function Budget() {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-2 flex-shrink-0">
+                          <div className="flex items-center gap-2 flex-shrink-0 mt-4 md:mt-0 md:ml-4">
                             {/* Archive Button */}
                             <motion.button
                               whileHover={{ scale: 1.15 }}

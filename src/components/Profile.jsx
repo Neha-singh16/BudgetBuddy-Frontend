@@ -407,7 +407,7 @@ export default function Profile() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 py-4 md:py-8 px-2 sm:px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-pink-50/20 py-4 md:py-8 px-3 sm:px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -417,13 +417,13 @@ export default function Profile() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 md:mb-8"
+          className="mb-4 sm:mb-6 md:mb-8"
         >
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2 flex items-center gap-2 md:gap-3">
-            <User className="text-purple-600 w-6 h-6 md:w-8 md:h-8" />
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-1 sm:mb-2 flex items-center gap-2">
+            <User className="text-purple-600 w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
             My Profile
           </h1>
-          <p className="text-sm md:text-base text-gray-600">Manage your personal information</p>
+          <p className="text-xs sm:text-sm md:text-base text-gray-600">Manage your personal information</p>
         </motion.div>
 
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden border border-purple-100/50">
@@ -432,16 +432,16 @@ export default function Profile() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-6 md:p-8 flex items-center justify-center"
+              className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-4 sm:p-6 md:p-8 flex items-center justify-center"
             >
               {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12" />
+              <div className="absolute top-0 right-0 w-28 h-28 sm:w-32 sm:h-32 bg-white/10 rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16" />
+              <div className="absolute bottom-0 left-0 w-20 h-20 sm:w-24 sm:h-24 bg-white/10 rounded-full -ml-10 sm:-ml-12 -mb-10 sm:-mb-12" />
 
-              <div className="relative z-10 w-full max-w-[280px]">
+              <div className="relative z-10 w-full max-w-[200px] sm:max-w-[250px] md:max-w-[280px]">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl bg-white/10 backdrop-blur-sm"
+                  className="aspect-[3/4] rounded-xl sm:rounded-2xl overflow-hidden border-3 sm:border-4 border-white/30 shadow-2xl bg-white/10 backdrop-blur-sm"
                 >
                   <img
                     src={avatarFile ? previewURL : avatarUrl}
@@ -531,7 +531,7 @@ export default function Profile() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
                 {[
                   { lbl: "First Name", nm: "firstName", disabled: false },
                   { lbl: "Last Name",  nm: "lastName",  disabled: false },
@@ -545,8 +545,9 @@ export default function Profile() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
+                    className="min-w-0"
                   >
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">{lbl}</label>
+                    <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">{lbl}</label>
                     {edit && !disabled ? (
                       <motion.input
                         whileFocus={{ scale: 1.01 }}
@@ -554,11 +555,11 @@ export default function Profile() {
                         type={nm === "dob" ? "date" : "text"}
                         value={form[nm]}
                         onChange={onChange}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all bg-gray-50 focus:bg-white"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition-all bg-gray-50 focus:bg-white text-sm"
                       />
                     ) : (
-                      <div className="px-4 py-3 bg-gray-50 rounded-xl border border-gray-200">
-                        <p className="text-gray-800">{form[nm] || "—"}</p>
+                      <div className="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200">
+                        <p className="text-sm text-gray-800">{form[nm] || "—"}</p>
                       </div>
                     )}
                   </motion.div>
@@ -571,13 +572,13 @@ export default function Profile() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="flex justify-end gap-3 pt-8 mt-8 border-t border-gray-200"
+                    className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-6 sm:pt-8 mt-6 sm:mt-8 border-t border-gray-200"
                   >
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setEdit(false)}
-                      className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition font-medium"
+                      className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl hover:bg-gray-300 transition font-medium text-sm sm:text-base"
                     >
                       Cancel
                     </motion.button>
@@ -585,7 +586,7 @@ export default function Profile() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={onSave}
-                      className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl shadow-lg hover:shadow-xl transition font-medium"
+                      className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition font-medium text-sm sm:text-base"
                     >
                       Save Changes
                     </motion.button>
