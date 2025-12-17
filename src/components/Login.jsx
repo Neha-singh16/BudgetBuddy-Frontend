@@ -254,11 +254,11 @@ export default function AuthPage() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden"
+          className="w-full max-w-4xl lg:max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden"
         >
           {/* Left Side - Branding/Info */}
           <motion.div 
-            className="relative bg-gradient-to-br from-emerald-600 via-teal-600 to-green-700 p-6 sm:p-8 md:p-12 flex flex-col justify-center items-center text-white overflow-hidden"
+            className="relative bg-gradient-to-br from-emerald-600 via-teal-600 to-green-700 p-5 sm:p-7 md:p-10 flex flex-col justify-center items-center text-white overflow-hidden"
             animate={{
               background: isLogin 
                 ? "linear-gradient(to bottom right, #059669, #0d9488, #15803d)"
@@ -294,59 +294,59 @@ export default function AuthPage() {
               <motion.div
                 animate={{ scale: [1, 1.08, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="mb-5 flex justify-center"
+                className="mb-4 flex justify-center"
               >
-                <div className="bg-white/20 backdrop-blur-md p-5 sm:p-6 rounded-full">
-                  <Wallet size={48} strokeWidth={1.5} className="sm:w-14 sm:h-14" />
+                <div className="bg-white/20 backdrop-blur-md p-4 sm:p-5 rounded-full">
+                  <Wallet size={42} strokeWidth={1.5} className="sm:w-12 sm:h-12" />
                 </div>
               </motion.div>
               
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 drop-shadow-lg">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 sm:mb-3 drop-shadow-lg">
                 Budget<span className="text-emerald-200">Buddy</span>
               </h1>
               
-              <p className="text-emerald-100 text-base sm:text-lg mb-6 sm:mb-8 max-w-md">
+              <p className="text-emerald-100 text-sm sm:text-base md:text-lg mb-5 sm:mb-7 max-w-md">
                 {isLogin 
                   ? "Welcome back! Take control of your finances and achieve your money goals."
                   : "Start your journey to financial freedom. Track, save, and grow your wealth."}
               </p>
 
-              <div className="flex gap-4 sm:gap-8 justify-center items-center flex-wrap">
+              <div className="flex gap-3 sm:gap-6 justify-center items-center flex-wrap">
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   className="text-center"
                 >
-                  <div className="bg-white/20 backdrop-blur-md p-3 sm:p-4 rounded-2xl mb-1 sm:mb-2">
-                    <TrendingUp size={28} className="sm:w-8 sm:h-8" />
+                  <div className="bg-white/20 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl mb-1 sm:mb-2">
+                    <TrendingUp size={24} className="sm:w-7 sm:h-7" />
                   </div>
-                  <p className="text-xs sm:text-sm text-emerald-100">Track Growth</p>
+                  <p className="text-[11px] sm:text-sm text-emerald-100">Track Growth</p>
                 </motion.div>
                 
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   className="text-center"
                 >
-                  <div className="bg-white/20 backdrop-blur-md p-3 sm:p-4 rounded-2xl mb-1 sm:mb-2">
-                    <PiggyBank size={28} className="sm:w-8 sm:h-8" />
+                  <div className="bg-white/20 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl mb-1 sm:mb-2">
+                    <PiggyBank size={24} className="sm:w-7 sm:h-7" />
                   </div>
-                  <p className="text-xs sm:text-sm text-emerald-100">Save Smart</p>
+                  <p className="text-[11px] sm:text-sm text-emerald-100">Save Smart</p>
                 </motion.div>
                 
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   className="text-center"
                 >
-                  <div className="bg-white/20 backdrop-blur-md p-3 sm:p-4 rounded-2xl mb-1 sm:mb-2">
-                    <DollarSign size={28} className="sm:w-8 sm:h-8" />
+                  <div className="bg-white/20 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl mb-1 sm:mb-2">
+                    <DollarSign size={24} className="sm:w-7 sm:h-7" />
                   </div>
-                  <p className="text-xs sm:text-sm text-emerald-100">Earn More</p>
+                  <p className="text-[11px] sm:text-sm text-emerald-100">Earn More</p>
                 </motion.div>
               </div>
             </motion.div>
           </motion.div>
 
           {/* Right Side - Form */}
-          <div className="p-6 sm:p-8 md:p-12 flex items-center justify-center">
+          <div className="p-5 sm:p-8 md:p-12 flex items-center justify-center">
             <div className="w-full max-w-md">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -356,7 +356,7 @@ export default function AuthPage() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="mb-6 sm:mb-8">
+                  <div className="mb-5 sm:mb-8">
                     <motion.h2 
                       className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2"
                       initial={{ opacity: 0, y: -10 }}
@@ -364,7 +364,7 @@ export default function AuthPage() {
                     >
                       {isLogin ? 'Welcome Back!' : 'Create Account'}
                     </motion.h2>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm sm:text-base">
                       {isLogin ? 'Login to manage your budget' : 'Sign up to start saving money'}
                     </p>
                   </div>
@@ -377,7 +377,7 @@ export default function AuthPage() {
                         exit={{ opacity: 0, height: 0 }}
                       >
                         <label className="block text-gray-700 font-medium mb-2">Full Name</label>
-                        <div className="flex gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3">
                           <motion.input
                             whileFocus={{ scale: 1.02 }}
                             name="firstName"
