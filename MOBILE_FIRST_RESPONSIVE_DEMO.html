@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Budget Buddy - Mobile-First Responsive Demo">
+  <title>Budget Buddy - Mobile-First Demo</title>
+  <link rel="stylesheet" href="styles/mobile-first.css">
+  <style>
+    /* Demo-specific overrides */
+    body {
+      background-color: #f8fafc;
+    }
+
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .demo-section {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .demo-title {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      color: #10b981;
+      margin-bottom: 1rem;
+    }
+
+    .demo-subtitle {
+      font-size: clamp(0.95rem, 2.4vw, 1rem);
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+    }
+
+    .feature-box {
+      background: #f1f5f9;
+      border-left: 4px solid #10b981;
+      padding: 1.25rem;
+      border-radius: 0.5rem;
+    }
+
+    .feature-box h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-box p {
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .mockup-section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .mockup-section {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .mockup {
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: white;
+    }
+
+    .mockup-header {
+      background: linear-gradient(135deg, #10b981, #0d9488);
+      color: white;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .mockup-content {
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .card-demo {
+      background: linear-gradient(135deg, #10b981, #0d9488);
+      color: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-demo-mobile .card-demo {
+      width: 100%;
+    }
+
+    .grid-demo {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-demo {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .grid-demo {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+    }
+
+    .grid-item {
+      background: #e0f2fe;
+      border: 1px solid #0ea5e9;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #0369a1;
+      font-weight: 600;
+    }
+
+    .breakpoint-indicator {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+
+    .code-block {
+      background: #1f2937;
+      color: #f3f4f6;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      font-family: 'Courier New', monospace;
+      margin: 1rem 0;
+      line-height: 1.5;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+
+    .checklist li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist li::before {
+      content: '✓';
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: #10b981;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      transition: background 0.2s;
+      margin-top: 1rem;
+    }
+
+    .cta-button:active {
+      background: #059669;
+      transform: scale(0.98);
+    }
+
+    @media (max-width: 767px) {
+      .hidden-mobile {
+        display: none !important;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hidden-tablet-up {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <!-- Header -->
+    <div class="demo-section">
+      <h1 class="demo-title">🎯 Budget Buddy Mobile-First Refactor</h1>
+      <p class="demo-subtitle">
+        This demo showcases the responsive layout transformation using mobile-first CSS principles.
+        Resize your browser or use Chrome DevTools Device Emulation to see how the layout adapts
+        from 360px (mobile) → 768px (tablet) → 1024px (desktop).
+      </p>
+    </div>
+
+    <!-- Responsive Indicator -->
+    <div class="demo-section">
+      <div class="breakpoint-indicator" id="breakpoint-indicator">
+        📱 Current Viewport: <strong>Mobile (< 768px)</strong> — Showing single-column layout with hamburger menu
+      </div>
+    </div>
+
+    <!-- Key Features -->
+    <div class="demo-section">
+      <h2 class="demo-title">✨ Key Improvements</h2>
+      <div class="feature-grid">
+        <div class="feature-box">
+          <h4>Mobile-First Design</h4>
+          <p>360px minimum width with stacked layout, hamburger menu, and 44px+ touch targets.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Responsive Grid</h4>
+          <p>1-column (mobile) → 2-column (tablet) → 3-column (desktop) using CSS Grid.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Fluid Typography</h4>
+          <p>Text scales smoothly using clamp() — no jarring breakpoints.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Accessibility</h4>
+          <p>WCAG AA compliant: 44px buttons, 4.5:1 color contrast, keyboard navigation.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Touch-Friendly</h4>
+          <p>Minimum 44px tap targets, generous spacing, no horizontal scroll.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Performance</h4>
+          <p>CSS variables, responsive images, deferred JS for Lighthouse optimization.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mockups -->
+    <div class="demo-section">
+      <h2 class="demo-title">📐 Layout Mockups</h2>
+      
+      <div class="mockup-section">
+        <!-- Mobile Mockup -->
+        <div>
+          <h3 style="margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">Mobile (360px)</h3>
+          <div class="mockup">
+            <div class="mockup-header">
+              ☰ Budget Buddy
+            </div>
+            <div class="mockup-content">
+              <!-- Stat Card -->
+              <div class="card-demo">
+                <div style="font-size: 0.8rem; opacity: 0.9;">Wallet Balance</div>
+                <div style="font-size: 1.25rem; font-weight: 700;">₹45,230</div>
+              </div>
+
+              <!-- Grid (1 col on mobile) -->
+              <div class="grid-demo">
+                <div class="grid-item">Remaining Income</div>
+                <div class="grid-item">Active Budgets</div>
+                <div class="grid-item">Total Spent</div>
+              </div>
+
+              <p style="margin-top: 1rem; font-size: 0.85rem; color: #9ca3af; margin-bottom: 0;">
+                ✓ Full-width cards
+                <br>✓ Hamburger menu
+                <br>✓ 44px+ buttons
+                <br>✓ No scroll
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Mockup -->
+        <div class="hidden-mobile">
+          <h3 style="margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">Desktop (1024px+)</h3>
+          <div class="mockup">
+            <div style="display: flex; height: 300px;">
+              <!-- Sidebar -->
+              <div style="width: 260px; background: #f1f5f9; border-right: 1px solid #e5e7eb; padding: 1rem 0; font-size: 0.85rem;">
+                <div style="padding: 0.75rem 1rem; border-left: 3px solid #10b981; color: #10b981; font-weight: 600;">Dashboard</div>
+                <div style="padding: 0.75rem 1rem; color: #6b7280;">Budget</div>
+                <div style="padding: 0.75rem 1rem; color: #6b7280;">Expense</div>
+                <div style="padding: 0.75rem 1rem; color: #6b7280;">Income</div>
+              </div>
+              <!-- Content -->
+              <div style="flex: 1; padding: 1rem; overflow: hidden;">
+                <div class="grid-demo">
+                  <div class="grid-item">Card 1</div>
+                  <div class="grid-item">Card 2</div>
+                  <div class="grid-item">Card 3</div>
+                  <div class="grid-item">Card 4</div>
+                  <div class="grid-item">Card 5</div>
+                  <div class="grid-item">Card 6</div>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #9ca3af;">
+                  ✓ 3-column grid
+                  <br>✓ Static sidebar
+                  <br>✓ Full layout
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Examples -->
+    <div class="demo-section">
+      <h2 class="demo-title">💻 Code Implementation</h2>
+      
+      <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">
+        1. Update App.jsx
+      </h3>
+      <div class="code-block">import ResponsiveBody from "./components/ResponsiveBody";
+import "./styles/mobile-first.css";
+
+// In routes:
+&lt;Route path="/app" element={&lt;ResponsiveBody /&gt;}&gt;
+      </div>
+
+      <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">
+        2. Update index.html Viewport
+      </h3>
+      <div class="code-block">&lt;meta name="viewport" 
+       content="width=device-width, initial-scale=1.0"&gt;
+      </div>
+
+      <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem;">
+        3. CSS Variables Usage
+      </h3>
+      <div class="code-block">/* Mobile-first spacing */
+.card {
+  padding: var(--spacing-lg);    /* 1.5rem on mobile */
+  gap: var(--spacing-md);        /* 1rem */
+}
+
+/* Responsive grid */
+.card-grid {
+  grid-template-columns: 1fr;    /* 1 col mobile */
+}
+
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+      </div>
+    </div>
+
+    <!-- Testing Checklist -->
+    <div class="demo-section">
+      <h2 class="demo-title">✅ Testing Checklist</h2>
+      
+      <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; margin-top: 1.5rem;">
+        Mobile (360px) Testing:
+      </h3>
+      <ul class="checklist">
+        <li>Hamburger menu appears in header</li>
+        <li>Cards are full-width (100%) with 1rem padding</li>
+        <li>Text is readable (≥0.95rem) without zoom</li>
+        <li>Buttons/inputs are ≥44px tall</li>
+        <li>No horizontal scrolling</li>
+        <li>Menu closes when navigating</li>
+      </ul>
+
+      <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; margin-top: 1.5rem;">
+        Tablet (768px) Testing:
+      </h3>
+      <ul class="checklist">
+        <li>Hamburger menu disappears</li>
+        <li>Sidebar appears on left (260px)</li>
+        <li>Cards show in 2-column grid</li>
+        <li>All text remains readable</li>
+      </ul>
+
+      <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; margin-top: 1.5rem;">
+        Desktop (1024px+) Testing:
+      </h3>
+      <ul class="checklist">
+        <li>3-column card grid</li>
+        <li>Sidebar remains visible</li>
+        <li>Container uses max-width (1200px)</li>
+        <li>Charts display properly</li>
+      </ul>
+
+      <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; margin-top: 1.5rem;">
+        Lighthouse Checks:
+      </h3>
+      <ul class="checklist">
+        <li>Performance: >90</li>
+        <li>Accessibility: >95</li>
+        <li>Best Practices: >90</li>
+        <li>No render-blocking CSS/JS</li>
+      </ul>
+    </div>
+
+    <!-- Breakpoint Reference -->
+    <div class="demo-section">
+      <h2 class="demo-title">📊 Breakpoint Reference</h2>
+      <div style="overflow-x: auto; margin-top: 1rem;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="background: #f1f5f9; border-bottom: 2px solid #e5e7eb;">
+              <th style="padding: 0.75rem; text-align: left;">Breakpoint</th>
+              <th style="padding: 0.75rem; text-align: left;">Device</th>
+              <th style="padding: 0.75rem; text-align: left;">Sidebar</th>
+              <th style="padding: 0.75rem; text-align: left;">Grid Cols</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 0.75rem;">360–412px</td>
+              <td style="padding: 0.75rem;">Mobile</td>
+              <td style="padding: 0.75rem;">Hamburger</td>
+              <td style="padding: 0.75rem;">1</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 0.75rem;">768–1023px</td>
+              <td style="padding: 0.75rem;">Tablet</td>
+              <td style="padding: 0.75rem;">Static (260px)</td>
+              <td style="padding: 0.75rem;">2</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 0.75rem;">1024–1279px</td>
+              <td style="padding: 0.75rem;">Desktop</td>
+              <td style="padding: 0.75rem;">Static (260px)</td>
+              <td style="padding: 0.75rem;">3</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem;">1280px+</td>
+              <td style="padding: 0.75rem;">Large Desktop</td>
+              <td style="padding: 0.75rem;">Static (260px)</td>
+              <td style="padding: 0.75rem;">3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="demo-section" style="text-align: center; background: linear-gradient(135deg, #10b981, #0d9488); color: white; border: none;">
+      <h2 style="color: white; margin-top: 0;">🚀 Ready to Deploy</h2>
+      <p style="color: rgba(255,255,255,0.9); margin-bottom: 1.5rem;">
+        All components are production-ready and tested against WCAG AA accessibility standards.
+      </p>
+      <a href="#" class="cta-button" style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white;">
+        View Documentation
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 2rem 0; color: #6b7280; font-size: 0.9rem;">
+      <p>
+        Budget Buddy — Mobile-First Responsive Design System v1.0
+        <br>
+        <small>Designed for 360px–1920px viewports with touch-first approach</small>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Update breakpoint indicator on resize
+    function updateBreakpoint() {
+      const width = window.innerWidth;
+      let label, description;
+
+      if (width < 768) {
+        label = '📱 Mobile (< 768px)';
+        description = 'Single-column layout with hamburger menu';
+      } else if (width < 1024) {
+        label = '📱 Tablet (768px–1023px)';
+        description = 'Two-column grid with static sidebar';
+      } else if (width < 1280) {
+        label = '🖥️ Desktop (1024px–1279px)';
+        description = 'Three-column grid with full layout';
+      } else {
+        label = '🖥️ Large Desktop (1280px+)';
+        description = 'Three-column grid with container max-width';
+      }
+
+      document.getElementById('breakpoint-indicator').innerHTML =
+        `${label} — ${description}`;
+    }
+
+    window.addEventListener('resize', updateBreakpoint);
+    updateBreakpoint();
+  </script>
+</body>
+</html>
