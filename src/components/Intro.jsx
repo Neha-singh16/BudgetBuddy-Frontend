@@ -49,14 +49,14 @@ export default function IntroPage() {
         ))}
       </div>
 
-      <div className="relative z-10 px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-20 max-w-6xl mx-auto">
+      <div className="relative z-10 px-0 sm:px-6 md:px-10 py-8 sm:py-12 md:py-20 w-full mx-auto">
         <div className="grid gap-8 sm:gap-10 lg:grid-cols-2 items-center">
           {/* Hero copy */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-5 sm:space-y-6"
+            className="space-y-5 sm:space-y-6 px-4 sm:px-0"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-emerald-400/30 backdrop-blur">
               <Sparkles className="w-5 h-5 text-emerald-200 flex-shrink-0" />
@@ -122,7 +122,7 @@ export default function IntroPage() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.6 }}
-            className="relative"
+            className="relative px-4 sm:px-0"
           >
             <div className="absolute -inset-4 bg-gradient-to-br from-emerald-400/20 via-teal-400/10 to-cyan-300/15 blur-3xl rounded-3xl" />
             <div className="relative bg-slate-950/60 border border-emerald-300/20 rounded-2xl sm:rounded-2xl md:rounded-3xl p-5 sm:p-6 md:p-8 shadow-2xl backdrop-blur-xl overflow-hidden">
@@ -185,13 +185,13 @@ export default function IntroPage() {
       </div>
 
       {/* Features section */}
-      <div id="features-section" className="relative z-10 px-4 sm:px-6 md:px-10 pb-14 sm:pb-16 md:pb-24 max-w-6xl mx-auto">
+      <div id="features-section" className="relative z-10 px-0 sm:px-6 md:px-10 pb-14 sm:pb-16 md:pb-24 w-full mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 sm:mb-12 md:mb-14"
+          className="text-center mb-10 sm:mb-12 md:mb-14 px-4 sm:px-0"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-emerald-400/30 backdrop-blur mb-4">
             <Sparkles className="w-5 h-5 text-emerald-200 flex-shrink-0" />
@@ -203,7 +203,7 @@ export default function IntroPage() {
           </p>
         </motion.div>
 
-        <div className="grid gap-5 sm:gap-6 md:gap-8 md:grid-cols-3">
+        <div className="grid gap-5 sm:gap-6 md:gap-8 md:grid-cols-3 px-4 sm:px-0">
           {[{
             title: "Set your budgets",
             desc: "Create tailored envelopes with smart limits and instant category suggestions.",
